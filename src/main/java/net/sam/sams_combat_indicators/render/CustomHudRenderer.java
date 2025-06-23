@@ -159,5 +159,4 @@ public class CustomHudRenderer {
         if (!event.usedConfiguredFov()) return;
         currentFov = event.getFOV();
     }
-
 }

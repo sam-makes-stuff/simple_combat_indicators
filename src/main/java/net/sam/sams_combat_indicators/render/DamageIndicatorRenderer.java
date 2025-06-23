@@ -61,10 +61,23 @@ public class DamageIndicatorRenderer {
     public static void renderDamageDealtIndicators(float partialTick, GuiGraphics guiGraphics){
         List<DamageDealtIndicator> temp2 = new ArrayList<>();
         for (DamageDealtIndicator dmg : damageDealtIndicators){
+
             dmg.tick(partialTick);
-            Vec3 renderPos = dmg.target.getPosition(partialTick).add(new Vec3(0,dmg.target.getBbHeight() * 0.5,0));
-            Vec2 screenRenderPos = CustomHudRenderer.worldToScreen(renderPos);
+            Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+            Vec3 up = new Vec3 (camera.getUpVector().x(),camera.getUpVector().y(),camera.getUpVector().z());
+            Vec3 left = new Vec3 (camera.getLeftVector().x(),camera.getLeftVector().y(),camera.getLeftVector().z());
+
+            double offsetY = 0.9;
+            double offsetX = 0.5;
+
+            double distanceToEntity = Minecraft.getInstance().player.getPosition(partialTick).subtract(dmg.target.getPosition(partialTick)).length();
+            Vec3 pos = dmg.target.getPosition(partialTick).add(new Vec3(0,dmg.target.getBbHeight() * 0.5,0));
+            pos = pos.add(up.scale(offsetY * (CustomHudRenderer.currentFov / 110) * Math.sqrt(distanceToEntity)));
+            pos = pos.add(left.scale(offsetX * (CustomHudRenderer.currentFov / 110) * Math.sqrt(distanceToEntity)));
+
+            Vec2 screenRenderPos = CustomHudRenderer.worldToScreen(pos);
             if(screenRenderPos != null){
+
                 String text = String.format("%.0f", dmg.damage);
                 CustomHudRenderer.renderText(guiGraphics, text, screenRenderPos.x, screenRenderPos.y, 0xFFFFFF, 1);
             }

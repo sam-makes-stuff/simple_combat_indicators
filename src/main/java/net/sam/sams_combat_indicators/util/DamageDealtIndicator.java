@@ -21,7 +21,7 @@ import net.sam.sams_combat_indicators.networking.packets.S2CDamageDealtPacket;
 @Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
 public class DamageDealtIndicator {
 
-    public static final int lifetime = 6000;
+    public static final int lifetime = 30;
     public static final int scaleTime = 20;
     public static final float maxSizeScale = 2.0f;
     public static final float minSizeScale = 1.0f;
