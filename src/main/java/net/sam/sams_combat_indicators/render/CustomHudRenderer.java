@@ -12,12 +12,20 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.sam.sams_combat_indicators.SamsCombatIndicators;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+@Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
 public class CustomHudRenderer {
+
+    public static double currentFov = 0.0;
 
     public static void renderCustomHudObject(ResourceLocation texture, float x, float y, float width, float height, float rotationRads, float r, float g, float b, float a) {
 
@@ -111,11 +119,12 @@ public class CustomHudRenderer {
 
         // Get projection matrix
         Matrix4f projectionMatrix = new Matrix4f();
-        float fov = (float) mc.options.fov().get();
+
+
         float aspectRatio = (float) mc.getWindow().getScreenWidth() / (float) mc.getWindow().getScreenHeight();
         float nearPlane = 0.05f;
         float farPlane = mc.gameRenderer.getRenderDistance() * 16.0f;
-        projectionMatrix.perspective((float) Math.toRadians(fov), aspectRatio, nearPlane, farPlane);
+        projectionMatrix.perspective((float) Math.toRadians(currentFov), aspectRatio, nearPlane, farPlane);
 
         // Transform the relative position
         Vector4f pos = new Vector4f(relX, relY, relZ, 1.0f);
@@ -142,6 +151,13 @@ public class CustomHudRenderer {
         float screenY = (1.0f - (pos.y() * 0.5f + 0.5f)) * screenHeight;
 
         return new Vec2(screenX, screenY);
+    }
+
+
+    @SubscribeEvent
+    public static void updateFov(ViewportEvent.ComputeFov event){
+        if (!event.usedConfiguredFov()) return;
+        currentFov = event.getFOV();
     }
 
 }

@@ -67,8 +67,6 @@ public class DamageIndicatorRenderer {
             if(screenRenderPos != null){
                 String text = String.format("%.0f", dmg.damage);
                 CustomHudRenderer.renderText(guiGraphics, text, screenRenderPos.x, screenRenderPos.y, 0xFFFFFF, 1);
-                System.out.println(screenRenderPos.x);
-                System.out.println(screenRenderPos.y);
             }
 
             if (dmg.age < dmg.lifetime){
