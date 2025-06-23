@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.sam.sams_combat_indicators.networking.ModPackets;
-import net.sam.sams_combat_indicators.networking.packets.S2CDamageNumberPacket;
+import net.sam.sams_combat_indicators.networking.packets.S2CDamageDealtPacket;
 
 public class DamageHandler {
     @SubscribeEvent
@@ -13,7 +13,7 @@ public class DamageHandler {
         if (event.getEntity().level().isClientSide) return;
 
         // Send packet to client
-        ModPackets.sendToTracking(event.getEntity(), new S2CDamageNumberPacket(
+        ModPackets.sendToTracking(event.getEntity(), new S2CDamageDealtPacket(
                 event.getEntity().getId(), event.getSource().getEntity().getId(), event.getAmount()
         ));
     }

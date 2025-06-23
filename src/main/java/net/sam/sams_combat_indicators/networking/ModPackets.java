@@ -9,7 +9,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.sam.sams_combat_indicators.SamsCombatIndicators;
 import net.sam.sams_combat_indicators.networking.packets.S2CAttackedPacket;
-import net.sam.sams_combat_indicators.networking.packets.S2CDamageNumberPacket;
+import net.sam.sams_combat_indicators.networking.packets.S2CDamageDealtPacket;
 
 
 public class ModPackets {
@@ -24,10 +24,10 @@ public class ModPackets {
             .simpleChannel();
 
     public static void registerClient(){
-        INSTANCE.registerMessage(id, S2CDamageNumberPacket.class,
-                S2CDamageNumberPacket::encode,
-                S2CDamageNumberPacket::decode,
-                S2CDamageNumberPacket::handle);
+        INSTANCE.registerMessage(id, S2CDamageDealtPacket.class,
+                S2CDamageDealtPacket::encode,
+                S2CDamageDealtPacket::decode,
+                S2CDamageDealtPacket::handle);
         id++;
 
         INSTANCE.registerMessage(id, S2CAttackedPacket.class,
