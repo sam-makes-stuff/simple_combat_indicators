@@ -21,6 +21,7 @@ public class ClientConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> END_NUMBER_COLOR_B;
 
     public static final ForgeConfigSpec.ConfigValue<Double> NUMBER_BASE_SCALE;
+    public static final ForgeConfigSpec.ConfigValue<Double> NUMBER_INCREMENT_SCALE;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_NUMBERS_FADE;
 
@@ -45,6 +46,7 @@ public class ClientConfig {
         END_NUMBER_COLOR_B = BUILDER.comment("End damage number color blue value (0-255) DEFAULT: 0").define("end_number_color_b", 0);
 
         NUMBER_BASE_SCALE = BUILDER.comment("Number base scale DEFAULT: 1.0").define("number_base_scale", 1.0);
+        NUMBER_INCREMENT_SCALE = BUILDER.comment("Scale increase per successive hit (only applies when stacking numbers is on) DEFAULT: 0.1").define("number_increment_scale", 0.2);
 
         DO_NUMBERS_FADE = BUILDER.comment("Should damage numbers fade away").define("do_numbers_fade", true);
         STACKING_NUMBERS = BUILDER.comment("Should damage numbers on a target sum up?").define("stack_damage_numbers", true);

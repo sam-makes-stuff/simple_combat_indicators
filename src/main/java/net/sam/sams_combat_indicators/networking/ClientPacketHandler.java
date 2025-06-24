@@ -41,17 +41,17 @@ public class ClientPacketHandler {
                 boolean found = false;
                 for (DamageDealtIndicator dmg : DamageIndicatorRenderer.damageDealtIndicators) {
                     if(dmg.target == entity){
-                        DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId,entity, damage + dmg.damage));
+                        DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId,entity, damage + dmg.damage, dmg.stackCount + 1));
                         DamageIndicatorRenderer.damageDealtIndicators.remove(dmg);
                         found = true;
                         break;
                     }
                 }
                 if(!found){
-                    DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, entity, damage));
+                    DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, entity, damage, 1));
                 }
             }else{
-                DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, entity, damage));
+                DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, entity, damage, 1));
             }
 
         }

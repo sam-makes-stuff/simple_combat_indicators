@@ -49,11 +49,16 @@ public class DamageDealtIndicator {
     public float rotation; //in degrees
     public float maxHealthProportion = 0f;
     public float baseScale;
+
+    public float incrementScale;
+
     public float scale = 0.0f;
     public float distScale = maxDistScale;
     public float scaleRatioSquared = 1.0f;
     public float opacity = 1.0f;
     public int color;
+
+    public int stackCount;
 
     public int r_s;
     public int g_s;
@@ -68,12 +73,12 @@ public class DamageDealtIndicator {
     public int b;
     public int a;
 
-    public DamageDealtIndicator(int targetId, Entity target, float damage) {
+    public DamageDealtIndicator(int targetId, Entity target, float damage, int stackCount) {
         this.target = target;
         this.targetId = targetId;
         this.targetPos = target.position().add(new Vec3(0,target.getBbHeight() * 0.5f,0));
         this.damage = damage;
-
+        this.stackCount = stackCount;
         int lifetime_temp;
         try{
             lifetime_temp = ClientConfig.NUMBER_DURATION.get();
@@ -140,7 +145,17 @@ public class DamageDealtIndicator {
                 System.out.println("Cannot convert NUMBER_BASE_SCALE to float, defaulting to 1.0");
                 tempScale = 1.0f;
             }
-            this.baseScale = tempScale / Minecraft.getInstance().options.guiScale().get();
+            this.baseScale = tempScale;
+
+
+            float tempIncrementScale;
+            try{
+                tempIncrementScale = (float)(double) ClientConfig.NUMBER_INCREMENT_SCALE.get();
+            }catch (Exception e){
+                System.out.println("Cannot convert NUMBER_INCREMENT_SCALE to float, defaulting to 0.2");
+                tempIncrementScale = 0.2f;
+            }
+            this.incrementScale = tempIncrementScale;
 
             if(ClientConfig.ROTATE_NUMBERS.get()) {
                 this.rotation = (target.level().random.nextFloat() * ClientConfig.ROTATE_RANGE.get() * 2) - ClientConfig.ROTATE_RANGE.get();
@@ -183,7 +198,7 @@ public class DamageDealtIndicator {
         g = (int)(g_e + (scaleRatio * (g_s - g_e)));
         b = (int)(b_e + (scaleRatio * (b_s - b_e)));
         this.color = rgba(this.r,this.g,this.b,this.a);
-        this.scale = baseScale;
+        this.scale = 3 * (baseScale + (stackCount * incrementScale)) / Minecraft.getInstance().options.guiScale().get();
         this.age += timeDif;
         calcScaleRatioSquared();
         lastPartialTick = currentPartialTick;
