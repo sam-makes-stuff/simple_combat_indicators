@@ -48,6 +48,7 @@ public class DamageDealtIndicator {
     public float lastPartialTick = 0f;
     public float rotation; //in degrees
     public float maxHealthProportion = 0f;
+    public float baseScale;
     public float scale = 0.0f;
     public float distScale = maxDistScale;
     public float scaleRatioSquared = 1.0f;
@@ -127,9 +128,19 @@ public class DamageDealtIndicator {
             try{
                 tempTime = ClientConfig.INITIAL_HIT_TIME.get();
             }catch (Exception e){
+                System.out.println("Cannot convert INITIAL_HIT_TIME to integer, defaulting to 0");
                 tempTime = 0;
             }
             initialTime = tempTime;
+
+            float tempScale;
+            try{
+                tempScale = (float)(double) ClientConfig.NUMBER_BASE_SCALE.get();
+            }catch (Exception e){
+                System.out.println("Cannot convert NUMBER_BASE_SCALE to float, defaulting to 1.0");
+                tempScale = 1.0f;
+            }
+            this.baseScale = tempScale / Minecraft.getInstance().options.guiScale().get();
 
             if(ClientConfig.ROTATE_NUMBERS.get()) {
                 this.rotation = (target.level().random.nextFloat() * ClientConfig.ROTATE_RANGE.get() * 2) - ClientConfig.ROTATE_RANGE.get();
@@ -163,20 +174,18 @@ public class DamageDealtIndicator {
             timeDif = (currentPartialTick - lastPartialTick); //ticks
         }
 
-        float colorRatio = age/initialTime;
-        if (colorRatio > 1.0f){
-            colorRatio = 1.0f;
+        float scaleRatio = age/initialTime;
+        if (scaleRatio > 1.0f){
+            scaleRatio = 1.0f;
         }
 
-        r = (int)(r_e + (colorRatio * (r_s - r_e)));
-        g = (int)(g_e + (colorRatio * (g_s - g_e)));
-        b = (int)(b_e + (colorRatio * (b_s - b_e)));
+        r = (int)(r_e + (scaleRatio * (r_s - r_e)));
+        g = (int)(g_e + (scaleRatio * (g_s - g_e)));
+        b = (int)(b_e + (scaleRatio * (b_s - b_e)));
         this.color = rgba(this.r,this.g,this.b,this.a);
+        this.scale = baseScale;
         this.age += timeDif;
         calcScaleRatioSquared();
-        tickScale();
-        tickDistScale();
-        tickOpacityScale();
         lastPartialTick = currentPartialTick;
     }
 
@@ -190,18 +199,6 @@ public class DamageDealtIndicator {
         scaleRatioSquared = (1 - scaleRatio) * (1 - scaleRatio);
     }
 
-    public void tickDistScale(){
-        this.distScale = (scaleRatioSquared * (maxDistScale - minDistScale)) + minDistScale;
-    }
-
-    public void tickScale(){
-        this.scale = ((scaleRatioSquared * (maxSizeScale - minSizeScale)) + minSizeScale) * (1 + (maxHealthProportion * (maxMaxHealthProportionScale - 1)));
-    }
-
-    public void tickOpacityScale(){
-        float scaleRatio = age/lifetime;
-        this.opacity = ((1 - scaleRatio) * (maxOpacityScale - minOpacityScale)) + minOpacityScale;
-    }
 
     public static int rgba(int r, int g, int b, int a) {
         return ((a) << 24) |
