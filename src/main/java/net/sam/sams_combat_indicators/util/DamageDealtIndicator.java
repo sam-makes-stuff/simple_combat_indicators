@@ -22,7 +22,6 @@ import net.sam.sams_combat_indicators.networking.packets.S2CDamageDealtPacket;
 @Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
 public class DamageDealtIndicator {
 
-    public static final int lifetime = 30;
     public static final int scaleTime = 20;
     public static final float maxSizeScale = 2.0f;
     public static final float minSizeScale = 1.0f;
@@ -33,6 +32,9 @@ public class DamageDealtIndicator {
     public static final float maxColourScale = 1.0f;
     public static final float minColourScale = 0.0f;
     public static final float maxMaxHealthProportionScale = 2.0f; //hits that deal 100% of max health will be this much bigger
+
+    public static int lifetime;
+    public static int initialTime;
 
     public Entity target;
     public int targetId;
@@ -50,44 +52,92 @@ public class DamageDealtIndicator {
     public float distScale = maxDistScale;
     public float scaleRatioSquared = 1.0f;
     public float opacity = 1.0f;
+    public int color;
 
-    public static final float baseBigHitColorR = 0.0f;
-    public static final float baseBigHitColorG = 1.0f;
-    public static final float baseBigHitColorB = 0.0f;
+    public int r_s;
+    public int g_s;
+    public int b_s;
 
-    public static final float baseSmallHitColorR = 0.0f;
-    public static final float baseSmallHitColorG = 0.95f;
-    public static final float baseSmallHitColorB = 0.0f;
+    public int r_e;
+    public int g_e;
+    public int b_e;
 
-    public float baseR = 0.0f;
-    public float baseG = 0.0f;
-    public float baseB = 0.0f;
-
-    public float r = 0.0f;
-    public float g = 0.0f;
-    public float b = 0.0f;
+    public int r;
+    public int g;
+    public int b;
+    public int a;
 
     public DamageDealtIndicator(int targetId, Entity target, float damage) {
         this.target = target;
         this.targetId = targetId;
         this.targetPos = target.position().add(new Vec3(0,target.getBbHeight() * 0.5f,0));
         this.damage = damage;
+
+        int lifetime_temp;
+        try{
+            lifetime_temp = ClientConfig.NUMBER_DURATION.get();
+        }catch (Exception e) {
+            System.out.println("Invalid number lifetime given in client config");
+            lifetime_temp = 30;
+        }
+        this.lifetime = lifetime_temp;
         LocalPlayer p = Minecraft.getInstance().player;
         if(p != null){
             this.maxHealthProportion = damage / (Minecraft.getInstance().player.getMaxHealth());
-            this.baseR = ((baseBigHitColorR - baseSmallHitColorR) * maxHealthProportion) + baseSmallHitColorR;
-            this.baseG = ((baseBigHitColorG - baseSmallHitColorG) * maxHealthProportion) + baseSmallHitColorG;
-            this.baseB = ((baseBigHitColorB - baseSmallHitColorB) * maxHealthProportion) + baseSmallHitColorB;
 
-            this.r = this.baseR;
-            this.g = this.baseG;
-            this.b = this.baseB;
+            int r_temp;
+            int g_temp;
+            int b_temp;
+            //set color from config
+            try{
+                r_temp = ClientConfig.END_NUMBER_COLOR_R.get();
+                g_temp = ClientConfig.END_NUMBER_COLOR_G.get();
+                b_temp = ClientConfig.END_NUMBER_COLOR_B.get();
+            }catch(Exception e){
+                System.out.println("Cannot convert given r,g,b to integer, defaulting to white");
+                r_temp = 255;
+                g_temp = 255;
+                b_temp = 255;
+            }
+
+            this.r_e = r_temp;
+            this.g_e = g_temp;
+            this.b_e = b_temp;
+
+            int initial_r_temp;
+            int initial_g_temp;
+            int initial_b_temp;
+
+            try{
+                initial_r_temp = ClientConfig.START_NUMBER_COLOR_R.get();
+                initial_g_temp = ClientConfig.START_NUMBER_COLOR_G.get();
+                initial_b_temp = ClientConfig.START_NUMBER_COLOR_B.get();
+            }catch (Exception e){
+                System.out.println("Cannot convert given r,g,b to integer, defaulting to white");
+                initial_r_temp = 255;
+                initial_g_temp = 255;
+                initial_b_temp = 255;
+            }
+
+            this.r_s = initial_r_temp;
+            this.g_s = initial_g_temp;
+            this.b_s = initial_b_temp;
+
+            int tempTime;
+            try{
+                tempTime = ClientConfig.INITIAL_HIT_TIME.get();
+            }catch (Exception e){
+                tempTime = 0;
+            }
+            initialTime = tempTime;
 
             if(ClientConfig.ROTATE_NUMBERS.get()) {
                 this.rotation = (target.level().random.nextFloat() * ClientConfig.ROTATE_RANGE.get() * 2) - ClientConfig.ROTATE_RANGE.get();
             }else{
                 this.rotation = 0.0f;
             }
+
+            this.a = 255;
 
         }
     }
@@ -112,6 +162,16 @@ public class DamageDealtIndicator {
         }else{
             timeDif = (currentPartialTick - lastPartialTick); //ticks
         }
+
+        float colorRatio = age/initialTime;
+        if (colorRatio > 1.0f){
+            colorRatio = 1.0f;
+        }
+
+        r = (int)(r_e + (colorRatio * (r_s - r_e)));
+        g = (int)(g_e + (colorRatio * (g_s - g_e)));
+        b = (int)(b_e + (colorRatio * (b_s - b_e)));
+        this.color = rgba(this.r,this.g,this.b,this.a);
         this.age += timeDif;
         calcScaleRatioSquared();
         tickScale();
@@ -141,5 +201,12 @@ public class DamageDealtIndicator {
     public void tickOpacityScale(){
         float scaleRatio = age/lifetime;
         this.opacity = ((1 - scaleRatio) * (maxOpacityScale - minOpacityScale)) + minOpacityScale;
+    }
+
+    public static int rgba(int r, int g, int b, int a) {
+        return ((a) << 24) |
+                ((r) << 16) |
+                ((g) << 8)  |
+                ((b));
     }
 }

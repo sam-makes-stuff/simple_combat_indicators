@@ -10,6 +10,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,6 +22,8 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+
+import java.awt.*;
 
 @Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
 public class CustomHudRenderer {
@@ -80,7 +83,6 @@ public class CustomHudRenderer {
         poseStack.translate(scaledX, scaledY, 0);
         poseStack.mulPose(Axis.ZP.rotation(rotationDeg * (float)(Math.PI/180)));
         poseStack.scale(size, size, 1.0f);
-
         guiGraphics.drawString(font, text, -textWidth / 2, -textHeight / 2, color, true);
         poseStack.popPose();
     }
@@ -154,10 +156,17 @@ public class CustomHudRenderer {
         return new Vec2(screenX, screenY);
     }
 
+    public static int rgba(float r, float g, float b, float a) {
+        return ((int)(a * 255) << 24) |
+                ((int)(r * 255) << 16) |
+                ((int)(g * 255) << 8)  |
+                ((int)(b * 255));
+    }
 
     @SubscribeEvent
     public static void updateFov(ViewportEvent.ComputeFov event){
         if (!event.usedConfiguredFov()) return;
         currentFov = event.getFOV();
     }
+
 }
