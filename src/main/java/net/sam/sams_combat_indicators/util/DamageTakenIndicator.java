@@ -157,7 +157,7 @@ public class DamageTakenIndicator {
         if(toXZ.dot(rightXZ) < 0){
             angle *= -1;
         }
-        rotation = (float) angle;
+        rotation = (float)( angle * (180/Math.PI));
     }
 
     public void calcScaleRatioSquared(){

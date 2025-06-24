@@ -45,8 +45,8 @@ public class DamageIndicatorRenderer {
         List<DamageTakenIndicator> temp1 = new ArrayList<>();
         for (DamageTakenIndicator dmg : damageTakenIndicators){
             dmg.tick(partialTick);
-            float x = (float) (screenWidth/2 + (Math.sin(dmg.rotation) * dmg.centerDistPx * dmg.distScale));
-            float y = (float) (screenHeight/2 - (Math.cos(dmg.rotation) * dmg.centerDistPx * dmg.distScale));
+            float x = (float) (screenWidth/2 + (Math.sin(dmg.rotation * (Math.PI/180)) * dmg.centerDistPx * dmg.distScale));
+            float y = (float) (screenHeight/2 - (Math.cos(dmg.rotation * (Math.PI/180)) * dmg.centerDistPx * dmg.distScale));
             float width = 15 * dmg.scale;
             float height = 11 * dmg.scale;
             CustomHudRenderer.renderCustomHudObject(DAMAGE_TAKEN_INDICATOR, x,y,width,height, dmg.rotation, dmg.r, dmg.g, dmg.b, dmg.opacity);
