@@ -15,6 +15,7 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sam.sams_combat_indicators.SamsCombatIndicators;
+import net.sam.sams_combat_indicators.config.ClientConfig;
 import net.sam.sams_combat_indicators.util.DamageDealtIndicator;
 import net.sam.sams_combat_indicators.util.DamageTakenIndicator;
 
@@ -67,8 +68,8 @@ public class DamageIndicatorRenderer {
             Vec3 up = new Vec3 (camera.getUpVector().x(),camera.getUpVector().y(),camera.getUpVector().z());
             Vec3 left = new Vec3 (camera.getLeftVector().x(),camera.getLeftVector().y(),camera.getLeftVector().z());
 
-            double offsetY = 0.9;
-            double offsetX = 0.5;
+            double offsetY = 0.75;
+            double offsetX = 0.35;
 
             double distanceToEntity = Minecraft.getInstance().player.getPosition(partialTick).subtract(dmg.target.getPosition(partialTick)).length();
             Vec3 pos = dmg.target.getPosition(partialTick).add(new Vec3(0,dmg.target.getBbHeight() * 0.5,0));
@@ -79,7 +80,7 @@ public class DamageIndicatorRenderer {
             if(screenRenderPos != null){
 
                 String text = String.format("%.0f", dmg.damage);
-                CustomHudRenderer.renderText(guiGraphics, text, screenRenderPos.x, screenRenderPos.y, 0xFFFFFF, 1);
+                CustomHudRenderer.renderText(guiGraphics, text, screenRenderPos.x, screenRenderPos.y, 0xFFFFFF, 1, dmg.rotation);
             }
 
             if (dmg.age < dmg.lifetime){

@@ -27,7 +27,7 @@ public class CustomHudRenderer {
 
     public static double currentFov = 0.0;
 
-    public static void renderCustomHudObject(ResourceLocation texture, float x, float y, float width, float height, float rotationRads, float r, float g, float b, float a) {
+    public static void renderCustomHudObject(ResourceLocation texture, float x, float y, float width, float height, float rotationDeg, float r, float g, float b, float a) {
 
         float scale_gui = 1.0f/(float) Minecraft.getInstance().getWindow().getGuiScale(); // e.g. 2.0
 
@@ -37,7 +37,7 @@ public class CustomHudRenderer {
         poseStack.scale(scale_gui, scale_gui, 1);
         poseStack.translate(x, y, 0);
         poseStack.scale(pixelScale, pixelScale, 1);
-        poseStack.mulPose(Axis.ZP.rotation(rotationRads));
+        poseStack.mulPose(Axis.ZP.rotation(rotationDeg * (float)(Math.PI/180)));
         poseStack.translate(-(width) / 2, -(height) / 2, 0);
 
         RenderSystem.disableCull();
@@ -64,7 +64,7 @@ public class CustomHudRenderer {
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
 
-    public static void renderText(GuiGraphics guiGraphics, String text, float x, float y, int color, float size){
+    public static void renderText(GuiGraphics guiGraphics, String text, float x, float y, int color, float size, float rotationDeg){
         Minecraft mc = Minecraft.getInstance();
         Font font = mc.font;
         double guiScale = mc.getWindow().getGuiScale();
@@ -78,6 +78,7 @@ public class CustomHudRenderer {
         poseStack.pushPose();
 
         poseStack.translate(scaledX, scaledY, 0);
+        poseStack.mulPose(Axis.ZP.rotation(rotationDeg * (float)(Math.PI/180)));
         poseStack.scale(size, size, 1.0f);
 
         guiGraphics.drawString(font, text, -textWidth / 2, -textHeight / 2, color, true);

@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.sam.sams_combat_indicators.config.ClientConfig;
 import net.sam.sams_combat_indicators.render.DamageIndicatorRenderer;
 import net.sam.sams_combat_indicators.util.DamageDealtIndicator;
 import net.sam.sams_combat_indicators.util.DamageTakenIndicator;
@@ -35,18 +36,24 @@ public class ClientPacketHandler {
         if (entity != null) {
             int entityId = entity.getId();
 
-            boolean found = false;
-            for (DamageDealtIndicator dmg : DamageIndicatorRenderer.damageDealtIndicators) {
-                if(dmg.target == entity){
-                    DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId,entity, damage + dmg.damage));
-                    DamageIndicatorRenderer.damageDealtIndicators.remove(dmg);
-                    found = true;
-                    break;
+            boolean stackingDamage = ClientConfig.STACKING_NUMBERS.get();
+            if(stackingDamage){
+                boolean found = false;
+                for (DamageDealtIndicator dmg : DamageIndicatorRenderer.damageDealtIndicators) {
+                    if(dmg.target == entity){
+                        DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId,entity, damage + dmg.damage));
+                        DamageIndicatorRenderer.damageDealtIndicators.remove(dmg);
+                        found = true;
+                        break;
+                    }
                 }
-            }
-            if(!found){
+                if(!found){
+                    DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, entity, damage));
+                }
+            }else{
                 DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, entity, damage));
             }
+
         }
     }
 

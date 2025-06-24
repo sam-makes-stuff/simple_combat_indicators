@@ -13,6 +13,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sam.sams_combat_indicators.SamsCombatIndicators;
+import net.sam.sams_combat_indicators.config.ClientConfig;
 import net.sam.sams_combat_indicators.networking.ModPackets;
 import net.sam.sams_combat_indicators.networking.packets.S2CAttackedPacket;
 import net.sam.sams_combat_indicators.networking.packets.S2CDamageDealtPacket;
@@ -43,7 +44,7 @@ public class DamageDealtIndicator {
     public float age = 0;
     public float currentPartialTick = 0f;
     public float lastPartialTick = 0f;
-    public float rotation = 0;
+    public float rotation; //in degrees
     public float maxHealthProportion = 0f;
     public float scale = 0.0f;
     public float distScale = maxDistScale;
@@ -81,6 +82,13 @@ public class DamageDealtIndicator {
             this.r = this.baseR;
             this.g = this.baseG;
             this.b = this.baseB;
+
+            if(ClientConfig.ROTATE_NUMBERS.get()) {
+                this.rotation = (target.level().random.nextFloat() * ClientConfig.ROTATE_RANGE.get() * 2) - ClientConfig.ROTATE_RANGE.get();
+            }else{
+                this.rotation = 0.0f;
+            }
+
         }
     }
 
@@ -89,7 +97,6 @@ public class DamageDealtIndicator {
         if(!(event.getEntity().level() instanceof ServerLevel)){return;}
         Entity attacker = event.getSource().getEntity();
         LivingEntity receiver = event.getEntity();
-
         if(attacker instanceof Player p){
             ModPackets.sendToTracking(event.getEntity(), new S2CDamageDealtPacket(
                     attacker.getId(), receiver.getId(), event.getAmount()
@@ -106,7 +113,6 @@ public class DamageDealtIndicator {
             timeDif = (currentPartialTick - lastPartialTick); //ticks
         }
         this.age += timeDif;
-        followTarget(currentPartialTick);
         calcScaleRatioSquared();
         tickScale();
         tickDistScale();
@@ -114,23 +120,6 @@ public class DamageDealtIndicator {
         lastPartialTick = currentPartialTick;
     }
 
-
-        public void followTarget(float partialTick){
-        Player player = Minecraft.getInstance().player;
-        Vec3 eyePos = player.getEyePosition(partialTick);
-        Vec3 to = (targetPos.subtract(eyePos).normalize());
-
-        Vec3 up = player.getUpVector(partialTick);
-        Vec3 right = player.getLookAngle().cross(up);
-
-        Vec3 proj = (up.scale(up.dot(to)).add(right.scale(right.dot(to)))).normalize();
-        double dotProd = proj.dot(up);
-        double angle = Math.acos(dotProd);
-        if(to.dot(right) < 0){
-            angle *= -1;
-        }
-        rotation = (float) angle;
-    }
 
     public void calcScaleRatioSquared(){
         float scaleRatio = age/scaleTime;
