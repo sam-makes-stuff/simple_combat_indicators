@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.sam.sams_combat_indicators.config.ClientConfig;
 import net.sam.sams_combat_indicators.render.DamageIndicatorRenderer;
+import net.sam.sams_combat_indicators.util.ConfigGetter;
 import net.sam.sams_combat_indicators.util.DamageDealtIndicator;
 import net.sam.sams_combat_indicators.util.DamageTakenIndicator;
 public class ClientPacketHandler {
@@ -25,6 +26,9 @@ public class ClientPacketHandler {
 //    }
 
     public static void handleS2CDamageDealtPacket(int attackerId, int receiverId, float damage) {
+
+        boolean numbers_enabled = ConfigGetter.getOrDefault(ClientConfig.ENABLE_DAMAGE_NUMBERS);
+        if(!numbers_enabled){return;}
 
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
@@ -58,6 +62,9 @@ public class ClientPacketHandler {
     }
 
     public static void handleS2CAttackedPacket(int attackerId, int receiverId, float damage) {
+
+        boolean indicator_enabled = ConfigGetter.getOrDefault(ClientConfig.ENABLE_DAMAGE_TAKEN_INDICATOR);
+        if(!indicator_enabled){return;}
 
         Level level = Minecraft.getInstance().level;
         if (level == null) return;

@@ -7,6 +7,8 @@ public class ClientConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_DAMAGE_NUMBERS;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_DAMAGE_TAKEN_INDICATOR;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> NUMBER_DURATION;
 
@@ -27,13 +29,15 @@ public class ClientConfig {
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> STACKING_NUMBERS;
     public static final ForgeConfigSpec.ConfigValue<Boolean> SPRAY_NUMBERS;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> ROTATE_NUMBERS;
     public static final ForgeConfigSpec.ConfigValue<Integer> ROTATE_RANGE;
 
     static {
         BUILDER.push("Config for Sam's Combat Indicators");
 
-        NUMBER_DURATION = BUILDER.comment("Damage number duration (in ticks)").define("number_duration", 30);
+        ENABLE_DAMAGE_NUMBERS = BUILDER.comment("Should damage numbers show DEFAULT: true").define("enable_damage_numbers", true);
+        ENABLE_DAMAGE_TAKEN_INDICATOR = BUILDER.comment("Should damage taken indicators show DEFAULT: true").define("enable_damage_taken_indicator", true);
+
+        NUMBER_DURATION = BUILDER.comment("Damage number duration (in ticks) DEFAULT: 30").define("number_duration", 30);
 
         INITIAL_HIT_TIME = BUILDER.comment("Duration damage numbers flash a different color and size initially (set to 0 to disable) (in ticks) DEFAULT: 10").define("separate_initial_hit_time", 10);
 
@@ -46,13 +50,12 @@ public class ClientConfig {
         END_NUMBER_COLOR_B = BUILDER.comment("End damage number color blue value (0-255) DEFAULT: 0").define("end_number_color_b", 0);
 
         NUMBER_BASE_SCALE = BUILDER.comment("Number base scale DEFAULT: 1.0").define("number_base_scale", 1.0);
-        NUMBER_INCREMENT_SCALE = BUILDER.comment("Scale increase per successive hit (only applies when stacking numbers is on) DEFAULT: 0.1").define("number_increment_scale", 0.2);
+        NUMBER_INCREMENT_SCALE = BUILDER.comment("Scale increase per successive hit (only applies when stacking numbers is on) DEFAULT: 0.2").define("number_increment_scale", 0.2);
 
         DO_NUMBERS_FADE = BUILDER.comment("Should damage numbers fade away").define("do_numbers_fade", true);
         STACKING_NUMBERS = BUILDER.comment("Should damage numbers on a target sum up?").define("stack_damage_numbers", true);
         SPRAY_NUMBERS = BUILDER.comment("Should damage numbers spray in a random direction?").define("spray_damage_numbers", false);
-        ROTATE_NUMBERS = BUILDER.comment("Should damage numbers spawn with random rotation?").define("rotate_damage_numbers", true);
-        ROTATE_RANGE = BUILDER.comment("Range in degrees (-rotate_range to +rotate_range) between which damage numbers will randomly rotate (does nothing if rotate_damage_numbers is disabled)").define("rotate_range", 15);
+        ROTATE_RANGE = BUILDER.comment("Range in degrees (-rotate_range to +rotate_range) between which damage numbers will randomly rotate (set to zero to disable)").define("rotate_range", 15);
 
         BUILDER.pop();
         SPEC = BUILDER.build();
