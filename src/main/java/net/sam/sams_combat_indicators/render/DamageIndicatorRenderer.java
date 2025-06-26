@@ -1,21 +1,17 @@
 package net.sam.sams_combat_indicators.render;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sam.sams_combat_indicators.SamsCombatIndicators;
-import net.sam.sams_combat_indicators.config.ClientConfig;
 import net.sam.sams_combat_indicators.util.DamageDealtIndicator;
 import net.sam.sams_combat_indicators.util.DamageTakenIndicator;
 
@@ -27,8 +23,8 @@ public class DamageIndicatorRenderer {
 
     public static List<DamageTakenIndicator> damageTakenIndicators = new ArrayList<>();
     public static List<DamageDealtIndicator> damageDealtIndicators = new ArrayList<>();
-    private static final ResourceLocation DAMAGE_TAKEN_INDICATOR = new ResourceLocation(SamsCombatIndicators.MOD_ID, "textures/client/damage_indicator2.png");
-
+    private static final ResourceLocation DAMAGE_TAKEN_INDICATOR = new ResourceLocation(SamsCombatIndicators.MOD_ID, "textures/client/damage_taken_indicator.png");
+    private static final ResourceLocation SKULL = new ResourceLocation(SamsCombatIndicators.MOD_ID, "textures/client/skull.png");
     @SubscribeEvent
     public static void onRenderGui(RenderGuiEvent.Post event) {
         renderDamageTakenIndicators(event.getPartialTick());
@@ -49,7 +45,7 @@ public class DamageIndicatorRenderer {
             float y = (float) (screenHeight/2 - (Math.cos(dmg.rotation * (Math.PI/180)) * dmg.centerDistPx * dmg.distScale));
             float width = 15 * dmg.scale;
             float height = 11 * dmg.scale;
-            CustomHudRenderer.renderCustomHudObject(DAMAGE_TAKEN_INDICATOR, x,y,width,height, dmg.rotation, dmg.r, dmg.g, dmg.b, dmg.opacity);
+            CustomHudRenderer.renderCustomHudObject(DAMAGE_TAKEN_INDICATOR, x,y,width,height, dmg.rotation, dmg.r, dmg.g, dmg.b, dmg.a);
             if (dmg.age < dmg.lifetime){
                 temp1.add(dmg);
             }
@@ -79,8 +75,21 @@ public class DamageIndicatorRenderer {
             Vec2 screenRenderPos = CustomHudRenderer.worldToScreen(pos);
             if(screenRenderPos != null){
 
-                String text = String.format("%.0f", dmg.damage);
-                CustomHudRenderer.renderText(guiGraphics, text, screenRenderPos.x, screenRenderPos.y, dmg.color, dmg.scale, dmg.rotation);
+                String text = String.format("%.0f", dmg.totalDamage);
+                CustomHudRenderer.renderText(guiGraphics, text, screenRenderPos.x, screenRenderPos.y, dmg.r, dmg.g, dmg.b, dmg.a , dmg.scale, dmg.rotation);
+//                if(dmg.isKill){
+//                    CustomHudRenderer.renderCustomHudObject(SKULL,
+//                            screenRenderPos.x,
+//                            screenRenderPos.y,
+//                            7,
+//                            7,
+//                            dmg.rotation,
+//                            DamageDealtIndicator.r_kill,
+//                            DamageDealtIndicator.g_kill,
+//                            DamageDealtIndicator.b_kill,
+//                            1.0f
+//                            );
+//                }
             }
 
             if (dmg.age < dmg.lifetime){

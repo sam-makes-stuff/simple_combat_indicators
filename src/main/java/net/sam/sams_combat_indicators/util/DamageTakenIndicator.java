@@ -26,8 +26,6 @@ public class DamageTakenIndicator {
     public static final float minSizeScale = 1.0f;
     public static final float maxDistScale = 1.5f;
     public static final float minDistScale = 1.0f;
-    public static final float maxOpacityScale = 1.0f;
-    public static final float minOpacityScale = 0.0f;
     public static final float maxColourScale = 1.0f;
     public static final float minColourScale = 0.0f;
     public static final float maxMaxHealthProportionScale = 2.0f; //hits that deal 100% of max health will be this much bigger
@@ -47,23 +45,24 @@ public class DamageTakenIndicator {
     public float scale = 0.0f;
     public float distScale = maxDistScale;
     public float scaleRatioSquared = 1.0f;
-    public float opacity = 1.0f;
 
-    public static final float baseBigHitColorR = 1.0f;
-    public static final float baseBigHitColorG = 0.0f;
-    public static final float baseBigHitColorB = 0.0f;
+    public static final int baseBigHitColorR = 255;
+    public static final int baseBigHitColorG = 0;
+    public static final int baseBigHitColorB = 0;
 
-    public static final float baseSmallHitColorR = 1.0f;
-    public static final float baseSmallHitColorG = 0.95f;
-    public static final float baseSmallHitColorB = 0.3f;
+    public static final int baseSmallHitColorR = 255;
+    public static final int baseSmallHitColorG = 242;
+    public static final int baseSmallHitColorB = 0;
 
-    public float baseR = 0.0f;
-    public float baseG = 0.0f;
-    public float baseB = 0.0f;
+    public int baseR = 0;
+    public int baseG = 0;
+    public int baseB = 0;
+    public int baseA = 0;
 
-    public float r = 0.0f;
-    public float g = 0.0f;
-    public float b = 0.0f;
+    public int r = 0;
+    public int g = 0;
+    public int b = 0;
+    public int a = 0;
 
     public DamageTakenIndicator(int attackerId, Entity attacker, float damage) {
         this.attacker = attacker;
@@ -76,9 +75,9 @@ public class DamageTakenIndicator {
             if (this.maxHealthProportion > 1.0f){
                 this.maxHealthProportion = 1.0f;
             }
-            this.baseR = ((baseBigHitColorR - baseSmallHitColorR) * maxHealthProportion) + baseSmallHitColorR;
-            this.baseG = ((baseBigHitColorG - baseSmallHitColorG) * maxHealthProportion) + baseSmallHitColorG;
-            this.baseB = ((baseBigHitColorB - baseSmallHitColorB) * maxHealthProportion) + baseSmallHitColorB;
+            this.baseR = (int) (((baseBigHitColorR - baseSmallHitColorR) * maxHealthProportion) + baseSmallHitColorR);
+            this.baseG = (int) (((baseBigHitColorG - baseSmallHitColorG) * maxHealthProportion) + baseSmallHitColorG);
+            this.baseB = (int) (((baseBigHitColorB - baseSmallHitColorB) * maxHealthProportion) + baseSmallHitColorB);
 
             this.r = this.baseR;
             this.g = this.baseG;
@@ -165,7 +164,6 @@ public class DamageTakenIndicator {
         if(scaleRatio > 1){
             scaleRatio = 1;
         }
-
         scaleRatioSquared = (1 - scaleRatio) * (1 - scaleRatio);
     }
 
@@ -179,6 +177,6 @@ public class DamageTakenIndicator {
 
     public void tickOpacityScale(){
         float scaleRatio = age/lifetime;
-        this.opacity = ((1 - scaleRatio) * (maxOpacityScale - minOpacityScale)) + minOpacityScale;
+        this.a = (int)((1 - scaleRatio) * 255);
     }
 }

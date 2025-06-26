@@ -30,7 +30,7 @@ public class CustomHudRenderer {
 
     public static double currentFov = 0.0;
 
-    public static void renderCustomHudObject(ResourceLocation texture, float x, float y, float width, float height, float rotationDeg, float r, float g, float b, float a) {
+    public static void renderCustomHudObject(ResourceLocation texture, float x, float y, float width, float height, float rotationDeg, int r, int g, int b, int a) {
 
         float scale_gui = 1.0f/(float) Minecraft.getInstance().getWindow().getGuiScale(); // e.g. 2.0
 
@@ -49,7 +49,12 @@ public class CustomHudRenderer {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderTexture(0, texture);
-        RenderSystem.setShaderColor(r, g, b, a);
+        float r_f = r/255.0f;
+        float g_f = g/255.0f;
+        float b_f = b/255.0f;
+        float a_f = a/255.0f;
+
+        RenderSystem.setShaderColor(r_f,g_f,b_f,a_f);
 
         Matrix4f matrix = poseStack.last().pose();
         Tesselator tesselator = Tesselator.getInstance();
@@ -67,7 +72,8 @@ public class CustomHudRenderer {
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
     }
 
-    public static void renderText(GuiGraphics guiGraphics, String text, float x, float y, int color, float size, float rotationDeg){
+    public static void renderText(GuiGraphics guiGraphics, String text, float x, float y, int r, int g, int b, int a, float size, float rotationDeg){
+        int color = rgba(r,g,b,a);
         Minecraft mc = Minecraft.getInstance();
         Font font = mc.font;
         double guiScale = mc.getWindow().getGuiScale();
@@ -156,17 +162,18 @@ public class CustomHudRenderer {
         return new Vec2(screenX, screenY);
     }
 
-    public static int rgba(float r, float g, float b, float a) {
-        return ((int)(a * 255) << 24) |
-                ((int)(r * 255) << 16) |
-                ((int)(g * 255) << 8)  |
-                ((int)(b * 255));
-    }
-
     @SubscribeEvent
     public static void updateFov(ViewportEvent.ComputeFov event){
         if (!event.usedConfiguredFov()) return;
         currentFov = event.getFOV();
     }
+
+    public static int rgba(int r, int g, int b, int a) {
+        return ((a) << 24) |
+                ((r) << 16) |
+                ((g) << 8)  |
+                ((b));
+    }
+
 
 }

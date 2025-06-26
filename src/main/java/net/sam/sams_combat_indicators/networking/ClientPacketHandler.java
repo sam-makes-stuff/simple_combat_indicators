@@ -3,6 +3,7 @@ package net.sam.sams_combat_indicators.networking;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.sam.sams_combat_indicators.config.ClientConfig;
@@ -37,25 +38,25 @@ public class ClientPacketHandler {
         if(player.getId() != attackerId){return;}
 
         Entity entity = level.getEntity(receiverId);
-        if (entity != null) {
-            int entityId = entity.getId();
+        if ((entity instanceof LivingEntity livingEntity)) {
+            int entityId = livingEntity.getId();
 
             boolean stackingDamage = ClientConfig.STACKING_NUMBERS.get();
             if(stackingDamage){
                 boolean found = false;
                 for (DamageDealtIndicator dmg : DamageIndicatorRenderer.damageDealtIndicators) {
-                    if(dmg.target == entity){
-                        DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId,entity, damage + dmg.damage, dmg.stackCount + 1));
+                    if(dmg.target == livingEntity){
+                        DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId,livingEntity,damage, damage + dmg.totalDamage, DamageDealtIndicator.baseScale + DamageDealtIndicator.incrementScale));
                         DamageIndicatorRenderer.damageDealtIndicators.remove(dmg);
                         found = true;
                         break;
                     }
                 }
                 if(!found){
-                    DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, entity, damage, 1));
+                    DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, livingEntity, damage,damage, DamageDealtIndicator.baseScale + DamageDealtIndicator.incrementScale));
                 }
             }else{
-                DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, entity, damage, 1));
+                DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, livingEntity, damage,damage, DamageDealtIndicator.baseScale + DamageDealtIndicator.incrementScale));
             }
 
         }
