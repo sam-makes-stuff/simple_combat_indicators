@@ -24,7 +24,6 @@ public class DamageIndicatorRenderer {
     public static List<DamageTakenIndicator> damageTakenIndicators = new ArrayList<>();
     public static List<DamageDealtIndicator> damageDealtIndicators = new ArrayList<>();
     private static final ResourceLocation DAMAGE_TAKEN_INDICATOR = new ResourceLocation(SamsCombatIndicators.MOD_ID, "textures/client/damage_taken_indicator.png");
-    private static final ResourceLocation SKULL = new ResourceLocation(SamsCombatIndicators.MOD_ID, "textures/client/skull.png");
     @SubscribeEvent
     public static void onRenderGui(RenderGuiEvent.Post event) {
         renderDamageTakenIndicators(event.getPartialTick());
@@ -77,19 +76,6 @@ public class DamageIndicatorRenderer {
 
                 String text = String.format("%.0f", dmg.totalDamage);
                 CustomHudRenderer.renderText(guiGraphics, text, screenRenderPos.x, screenRenderPos.y, dmg.r, dmg.g, dmg.b, dmg.a , dmg.scale, dmg.rotation);
-//                if(dmg.isKill){
-//                    CustomHudRenderer.renderCustomHudObject(SKULL,
-//                            screenRenderPos.x,
-//                            screenRenderPos.y,
-//                            7,
-//                            7,
-//                            dmg.rotation,
-//                            DamageDealtIndicator.r_kill,
-//                            DamageDealtIndicator.g_kill,
-//                            DamageDealtIndicator.b_kill,
-//                            1.0f
-//                            );
-//                }
             }
 
             if (dmg.age < dmg.lifetime){
