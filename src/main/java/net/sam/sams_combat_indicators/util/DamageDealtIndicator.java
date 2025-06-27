@@ -20,10 +20,10 @@ import net.sam.sams_combat_indicators.networking.packets.S2CDamageDealtPacket;
 @Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
 public class DamageDealtIndicator {
 
-    public static int lifetime = ConfigGetter.getOrDefault(ClientConfig.NUMBER_DURATION);
-    public static int initialTime = ConfigGetter.getOrDefault(ClientConfig.INITIAL_HIT_TIME);
+    public static int lifetime = ConfigUtils.getOrDefault(ClientConfig.NUMBER_DURATION);
+    public static int initialTime = ConfigUtils.getOrDefault(ClientConfig.INITIAL_HIT_TIME);
 
-    public static float maxRotation = ConfigGetter.getOrDefault(ClientConfig.ROTATE_RANGE);
+    public static float maxRotation = ConfigUtils.getOrDefault(ClientConfig.ROTATE_RANGE);
 
     public LivingEntity target;
     public int targetId;
@@ -38,29 +38,43 @@ public class DamageDealtIndicator {
     public float rotation; //in degrees
     public float maxHealthProportion = 0f;
 
-    public static float baseScale = (float) (ConfigGetter.getOrDefault(ClientConfig.NUMBER_BASE_SCALE)/ Minecraft.getInstance().options.guiScale().get());
-    public static float incrementScale = (float) (double) (ConfigGetter.getOrDefault(ClientConfig.NUMBER_INCREMENT_SCALE));
-    public static float decrementSpeed = (float) (double) (ConfigGetter.getOrDefault(ClientConfig.NUMBER_DECREMENT_SPEED));
+    public static float baseScale = (float) (ConfigUtils.getOrDefault(ClientConfig.NUMBER_BASE_SCALE)/ Minecraft.getInstance().options.guiScale().get());
+    public static float incrementScale = (float) (double) (ConfigUtils.getOrDefault(ClientConfig.NUMBER_INCREMENT_SCALE));
+    public static float decrementSpeed = (float) (double) (ConfigUtils.getOrDefault(ClientConfig.NUMBER_DECREMENT_SPEED));
 
-    public static int r_kill = ConfigGetter.getOrDefault(ClientConfig.KILL_COLOR_R);
-    public static int g_kill = ConfigGetter.getOrDefault(ClientConfig.KILL_COLOR_G);
-    public static int b_kill = ConfigGetter.getOrDefault(ClientConfig.KILL_COLOR_B);
+    public static int r_kill = ConfigUtils.getOrDefault(ClientConfig.KILL_COLOR_R);
+    public static int g_kill = ConfigUtils.getOrDefault(ClientConfig.KILL_COLOR_G);
+    public static int b_kill = ConfigUtils.getOrDefault(ClientConfig.KILL_COLOR_B);
 
     public float scale;
     public int color;
 
-    public static int r_s = ConfigGetter.getOrDefault(ClientConfig.START_NUMBER_COLOR_R);
-    public static int g_s = ConfigGetter.getOrDefault(ClientConfig.START_NUMBER_COLOR_G);
-    public static int b_s = ConfigGetter.getOrDefault(ClientConfig.START_NUMBER_COLOR_B);
+    public static int r_s = ConfigUtils.getOrDefault(ClientConfig.START_NUMBER_COLOR_R);
+    public static int g_s = ConfigUtils.getOrDefault(ClientConfig.START_NUMBER_COLOR_G);
+    public static int b_s = ConfigUtils.getOrDefault(ClientConfig.START_NUMBER_COLOR_B);
 
-    public static int r_e = ConfigGetter.getOrDefault(ClientConfig.END_NUMBER_COLOR_R);
-    public static int g_e = ConfigGetter.getOrDefault(ClientConfig.END_NUMBER_COLOR_G);
-    public static int b_e = ConfigGetter.getOrDefault(ClientConfig.END_NUMBER_COLOR_B);
+    public static int r_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_R);
+    public static int g_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_G);
+    public static int b_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_B);
 
     public int r;
     public int g;
     public int b;
-    public int a;
+    public int a = 255;
+
+    public static float gravity = 0.0f;
+
+
+    public static float sprayVel = 10.0f;
+    public static float sprayAngleRange = 180.0f;
+    public static float sprayAngleOffset = 0.0f;
+    public static float friction = 0.1f;
+
+    public int xOffset = 0;
+    public int yOffset = 0;
+
+    public float xVel;
+    public float yVel;
 
     public DamageDealtIndicator(int targetId, LivingEntity target, float damage, float totalDamage, float scale) {
         this.target = target;
@@ -86,9 +100,14 @@ public class DamageDealtIndicator {
                 this.isKill = false;
             }
 
-
-
-            this.a = 255;
+            if(ConfigUtils.getOrDefault(ClientConfig.SPRAY_NUMBERS)){
+                float randAngle = (float)(((Minecraft.getInstance().level.random.nextFloat() * (sprayAngleRange * (Math.PI/180.0f)) * 2) - (sprayAngleRange * (Math.PI/180.0f))) + (sprayAngleOffset * (Math.PI/180.0f)));
+                xVel = (float)(sprayVel * Math.cos(randAngle));
+                yVel = (float)(sprayVel * Math.sin(randAngle));
+            }else{
+                xVel = 0.0f;
+                yVel = 0.0f;
+            }
 
         }
     }
@@ -135,8 +154,13 @@ public class DamageDealtIndicator {
             this.scale -= (decrementSpeed / 20) * timeDif;
         }
 
+        this.xOffset += xVel * timeDif;
+        this.yOffset += yVel * timeDif;
+
         this.age += timeDif;
         lastPartialTick = currentPartialTick;
+
+
     }
 
 

@@ -21,10 +21,10 @@ import net.sam.sams_combat_indicators.networking.packets.S2CAttackedPacket;
 @Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
 public class DamageTakenIndicator {
 
-    public static final int lifetime = ConfigGetter.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_DURATION);
-    public static final int scaleTime = ConfigGetter.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_BIG_DURATION);
-    public static final float maxSizeScale = (float)(double)(ConfigGetter.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_MAX_SIZE_SCALE));
-    public static final float minSizeScale = (float)(double)(ConfigGetter.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_MIN_SIZE_SCALE));
+    public static final int lifetime = ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_DURATION);
+    public static final int scaleTime = ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_BIG_DURATION);
+    public static final float maxSizeScale = (float)(double)(ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_MAX_SIZE_SCALE));
+    public static final float minSizeScale = (float)(double)(ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_MIN_SIZE_SCALE));
     public static final float maxDistScale = 1.5f;
     public static final float minDistScale = 1.0f;
     public static final float maxColourScale = 1.0f;
@@ -37,7 +37,7 @@ public class DamageTakenIndicator {
     public float damage;
 
     // to be changed every tick()
-    public int centerDistPx = ConfigGetter.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_DISTANCE);
+    public int centerDistPx = ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_DISTANCE);
     public float age = 0;
     public float currentPartialTick = 0f;
     public float lastPartialTick = 0f;
@@ -47,13 +47,13 @@ public class DamageTakenIndicator {
     public float distScale = maxDistScale;
     public float scaleRatioSquared = 1.0f;
 
-    public static final int baseBigHitColorR = ConfigGetter.getOrDefault(ClientConfig.BIG_HIT_INDICATOR_COLOR_R);
-    public static final int baseBigHitColorG = ConfigGetter.getOrDefault(ClientConfig.BIG_HIT_INDICATOR_COLOR_G);
-    public static final int baseBigHitColorB = ConfigGetter.getOrDefault(ClientConfig.BIG_HIT_INDICATOR_COLOR_B);
+    public static final int baseBigHitColorR = ConfigUtils.getOrDefault(ClientConfig.BIG_HIT_INDICATOR_COLOR_R);
+    public static final int baseBigHitColorG = ConfigUtils.getOrDefault(ClientConfig.BIG_HIT_INDICATOR_COLOR_G);
+    public static final int baseBigHitColorB = ConfigUtils.getOrDefault(ClientConfig.BIG_HIT_INDICATOR_COLOR_B);
 
-    public static final int baseSmallHitColorR = ConfigGetter.getOrDefault(ClientConfig.SMALL_HIT_INDICATOR_COLOR_R);
-    public static final int baseSmallHitColorG = ConfigGetter.getOrDefault(ClientConfig.SMALL_HIT_INDICATOR_COLOR_G);
-    public static final int baseSmallHitColorB = ConfigGetter.getOrDefault(ClientConfig.SMALL_HIT_INDICATOR_COLOR_B);
+    public static final int baseSmallHitColorR = ConfigUtils.getOrDefault(ClientConfig.SMALL_HIT_INDICATOR_COLOR_R);
+    public static final int baseSmallHitColorG = ConfigUtils.getOrDefault(ClientConfig.SMALL_HIT_INDICATOR_COLOR_G);
+    public static final int baseSmallHitColorB = ConfigUtils.getOrDefault(ClientConfig.SMALL_HIT_INDICATOR_COLOR_B);
 
     public int baseR = 0;
     public int baseG = 0;
@@ -174,7 +174,6 @@ public class DamageTakenIndicator {
 
     public void tickScale(){
         this.scale = ((scaleRatioSquared * (maxSizeScale - minSizeScale)) + minSizeScale) * (1 + (maxHealthProportion * (maxMaxHealthProportionScale - 1)));
-        System.out.println(String.format("SCALE: %f", scale));
     }
 
     public void tickOpacityScale(){

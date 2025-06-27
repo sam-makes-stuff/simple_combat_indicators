@@ -11,7 +11,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.sam.sams_combat_indicators.SamsCombatIndicators;
+import net.sam.sams_combat_indicators.config.ClientConfig;
+import net.sam.sams_combat_indicators.util.ConfigUtils;
 import net.sam.sams_combat_indicators.util.DamageDealtIndicator;
 import net.sam.sams_combat_indicators.util.DamageTakenIndicator;
 
@@ -20,6 +23,8 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
 public class DamageIndicatorRenderer {
+
+    public static boolean shouldSpray;
 
     public static List<DamageTakenIndicator> damageTakenIndicators = new ArrayList<>();
     public static List<DamageDealtIndicator> damageDealtIndicators = new ArrayList<>();
@@ -68,14 +73,16 @@ public class DamageIndicatorRenderer {
 
             double distanceToEntity = Minecraft.getInstance().player.getPosition(partialTick).subtract(dmg.target.getPosition(partialTick)).length();
             Vec3 pos = dmg.target.getPosition(partialTick).add(new Vec3(0,dmg.target.getBbHeight() * 0.5,0));
-            pos = pos.add(up.scale(offsetY * (CustomHudRenderer.currentFov / 110) * Math.sqrt(distanceToEntity)));
-            pos = pos.add(left.scale(offsetX * (CustomHudRenderer.currentFov / 110) * Math.sqrt(distanceToEntity)));
-
+            //if spray numbers is off then spawn at top left, otherwise spawn in center of mob
+            if(!shouldSpray){
+                pos = pos.add(up.scale(offsetY * (CustomHudRenderer.currentFov / 110) * Math.sqrt(distanceToEntity)));
+                pos = pos.add(left.scale(offsetX * (CustomHudRenderer.currentFov / 110) * Math.sqrt(distanceToEntity)));
+            }
             Vec2 screenRenderPos = CustomHudRenderer.worldToScreen(pos);
             if(screenRenderPos != null){
 
                 String text = String.format("%.0f", dmg.totalDamage);
-                CustomHudRenderer.renderText(guiGraphics, text, screenRenderPos.x, screenRenderPos.y, dmg.r, dmg.g, dmg.b, dmg.a , dmg.scale, dmg.rotation);
+                CustomHudRenderer.renderText(guiGraphics, text, screenRenderPos.x + dmg.xOffset, screenRenderPos.y + dmg.yOffset, dmg.r, dmg.g, dmg.b, dmg.a , dmg.scale, dmg.rotation);
             }
 
             if (dmg.age < dmg.lifetime){
@@ -84,4 +91,6 @@ public class DamageIndicatorRenderer {
         }
         damageDealtIndicators = temp2;
     }
+
+
 }
