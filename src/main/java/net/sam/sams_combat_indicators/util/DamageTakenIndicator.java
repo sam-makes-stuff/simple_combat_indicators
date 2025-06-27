@@ -23,13 +23,12 @@ public class DamageTakenIndicator {
 
     public static int lifetime;
     public static int scaleTime;
-    public static float maxSizeScale;
-    public static float minSizeScale;
+    public static float baseSizeScale;
+    public static float maxSizeScaleMult;
     public static float maxDistScale = 1.5f;
     public static float minDistScale = 1.0f;
     public static float maxColourScale = 1.0f;
     public static float minColourScale = 0.0f;
-    public static float maxMaxHealthProportionScale = maxSizeScale; //hits that deal 100% of max health will be this much bigger
 
     public Entity attacker;
     public int attackerId;
@@ -173,7 +172,7 @@ public class DamageTakenIndicator {
     }
 
     public void tickScale(){
-        this.scale = ((scaleRatioSquared * (maxSizeScale - minSizeScale)) + minSizeScale) * (1 + (maxHealthProportion * (maxMaxHealthProportionScale - 1)));
+        this.scale = (baseSizeScale + (scaleRatioSquared)) * (1 + (maxHealthProportion));
     }
 
     public void tickOpacityScale(){
@@ -185,8 +184,8 @@ public class DamageTakenIndicator {
     public static void initFromConfig() {
         lifetime = ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_DURATION);
         scaleTime = ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_BIG_DURATION);
-        maxSizeScale = (float)(double)(ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_MAX_SIZE_SCALE));
-        minSizeScale = (float)(double)(ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_MIN_SIZE_SCALE));
+        baseSizeScale = (float)(double)(ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_BASE_SIZE_SCALE));
+        maxSizeScaleMult = (float)(double)(ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_BASE_SIZE_SCALE));
 
         centerDistPx = ConfigUtils.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_DISTANCE);
 
