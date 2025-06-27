@@ -13,6 +13,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.sam.sams_combat_indicators.SamsCombatIndicators;
+import net.sam.sams_combat_indicators.config.ClientConfig;
 import net.sam.sams_combat_indicators.networking.ModPackets;
 import net.sam.sams_combat_indicators.networking.packets.S2CAttackedPacket;
 
@@ -20,15 +21,15 @@ import net.sam.sams_combat_indicators.networking.packets.S2CAttackedPacket;
 @Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
 public class DamageTakenIndicator {
 
-    public static final int lifetime = 60;
-    public static final int scaleTime = 20;
-    public static final float maxSizeScale = 2.0f;
-    public static final float minSizeScale = 1.0f;
+    public static final int lifetime = ConfigGetter.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_DURATION);
+    public static final int scaleTime = ConfigGetter.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_BIG_DURATION);
+    public static final float maxSizeScale = (float)(double)(ConfigGetter.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_MAX_SIZE_SCALE));
+    public static final float minSizeScale = (float)(double)(ConfigGetter.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_MIN_SIZE_SCALE));
     public static final float maxDistScale = 1.5f;
     public static final float minDistScale = 1.0f;
     public static final float maxColourScale = 1.0f;
     public static final float minColourScale = 0.0f;
-    public static final float maxMaxHealthProportionScale = 2.0f; //hits that deal 100% of max health will be this much bigger
+    public static final float maxMaxHealthProportionScale = maxSizeScale; //hits that deal 100% of max health will be this much bigger
 
     public Entity attacker;
     public int attackerId;
@@ -36,7 +37,7 @@ public class DamageTakenIndicator {
     public float damage;
 
     // to be changed every tick()
-    public int centerDistPx = 220;
+    public int centerDistPx = ConfigGetter.getOrDefault(ClientConfig.DAMAGE_TAKEN_INDICATOR_DISTANCE);
     public float age = 0;
     public float currentPartialTick = 0f;
     public float lastPartialTick = 0f;
@@ -46,13 +47,13 @@ public class DamageTakenIndicator {
     public float distScale = maxDistScale;
     public float scaleRatioSquared = 1.0f;
 
-    public static final int baseBigHitColorR = 255;
-    public static final int baseBigHitColorG = 0;
-    public static final int baseBigHitColorB = 0;
+    public static final int baseBigHitColorR = ConfigGetter.getOrDefault(ClientConfig.BIG_HIT_INDICATOR_COLOR_R);
+    public static final int baseBigHitColorG = ConfigGetter.getOrDefault(ClientConfig.BIG_HIT_INDICATOR_COLOR_G);
+    public static final int baseBigHitColorB = ConfigGetter.getOrDefault(ClientConfig.BIG_HIT_INDICATOR_COLOR_B);
 
-    public static final int baseSmallHitColorR = 255;
-    public static final int baseSmallHitColorG = 242;
-    public static final int baseSmallHitColorB = 0;
+    public static final int baseSmallHitColorR = ConfigGetter.getOrDefault(ClientConfig.SMALL_HIT_INDICATOR_COLOR_R);
+    public static final int baseSmallHitColorG = ConfigGetter.getOrDefault(ClientConfig.SMALL_HIT_INDICATOR_COLOR_G);
+    public static final int baseSmallHitColorB = ConfigGetter.getOrDefault(ClientConfig.SMALL_HIT_INDICATOR_COLOR_B);
 
     public int baseR = 0;
     public int baseG = 0;
@@ -173,6 +174,7 @@ public class DamageTakenIndicator {
 
     public void tickScale(){
         this.scale = ((scaleRatioSquared * (maxSizeScale - minSizeScale)) + minSizeScale) * (1 + (maxHealthProportion * (maxMaxHealthProportionScale - 1)));
+        System.out.println(String.format("SCALE: %f", scale));
     }
 
     public void tickOpacityScale(){
