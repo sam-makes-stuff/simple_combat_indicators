@@ -20,10 +20,10 @@ import net.sam.sams_combat_indicators.networking.packets.S2CDamageDealtPacket;
 @Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
 public class DamageDealtIndicator {
 
-    public static int lifetime = ConfigUtils.getOrDefault(ClientConfig.NUMBER_DURATION);
-    public static int initialTime = ConfigUtils.getOrDefault(ClientConfig.INITIAL_HIT_TIME);
+    public static int lifetime;
+    public static int initialTime;
 
-    public static float maxRotation = ConfigUtils.getOrDefault(ClientConfig.ROTATE_RANGE);
+    public static float maxRotation;
 
     public LivingEntity target;
     public int targetId;
@@ -38,24 +38,24 @@ public class DamageDealtIndicator {
     public float rotation; //in degrees
     public float maxHealthProportion = 0f;
 
-    public static float baseScale = (float) (ConfigUtils.getOrDefault(ClientConfig.NUMBER_BASE_SCALE)/ Minecraft.getInstance().options.guiScale().get());
-    public static float incrementScale = (float) (double) (ConfigUtils.getOrDefault(ClientConfig.NUMBER_INCREMENT_SCALE));
-    public static float decrementSpeed = (float) (double) (ConfigUtils.getOrDefault(ClientConfig.NUMBER_DECREMENT_SPEED));
+    public static float baseScale;
+    public static float incrementScale;
+    public static float decrementSpeed;
 
-    public static int r_kill = ConfigUtils.getOrDefault(ClientConfig.KILL_COLOR_R);
-    public static int g_kill = ConfigUtils.getOrDefault(ClientConfig.KILL_COLOR_G);
-    public static int b_kill = ConfigUtils.getOrDefault(ClientConfig.KILL_COLOR_B);
+    public static int r_kill;
+    public static int g_kill;
+    public static int b_kill;
 
     public float scale;
     public int color;
 
-    public static int r_s = ConfigUtils.getOrDefault(ClientConfig.START_NUMBER_COLOR_R);
-    public static int g_s = ConfigUtils.getOrDefault(ClientConfig.START_NUMBER_COLOR_G);
-    public static int b_s = ConfigUtils.getOrDefault(ClientConfig.START_NUMBER_COLOR_B);
+    public static int r_s;
+    public static int g_s;
+    public static int b_s;
 
-    public static int r_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_R);
-    public static int g_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_G);
-    public static int b_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_B);
+    public static int r_e;
+    public static int g_e;
+    public static int b_e;
 
     public int r;
     public int g;
@@ -170,5 +170,25 @@ public class DamageDealtIndicator {
                 ((r) << 16) |
                 ((g) << 8)  |
                 ((b));
+    }
+
+    //called in ConfigUtils when config is read
+    public static void initFromConfig() {
+
+        lifetime = ConfigUtils.getOrDefault(ClientConfig.NUMBER_DURATION);
+        initialTime = ConfigUtils.getOrDefault(ClientConfig.INITIAL_HIT_TIME);
+        maxRotation = ConfigUtils.getOrDefault(ClientConfig.ROTATE_RANGE);
+        baseScale = (float) (ConfigUtils.getOrDefault(ClientConfig.NUMBER_BASE_SCALE)/ Minecraft.getInstance().options.guiScale().get());
+        incrementScale = (float) (double) (ConfigUtils.getOrDefault(ClientConfig.NUMBER_INCREMENT_SCALE));
+        decrementSpeed = (float) (double) (ConfigUtils.getOrDefault(ClientConfig.NUMBER_DECREMENT_SPEED));
+        r_kill = ConfigUtils.getOrDefault(ClientConfig.KILL_COLOR_R);
+        g_kill = ConfigUtils.getOrDefault(ClientConfig.KILL_COLOR_G);
+        b_kill = ConfigUtils.getOrDefault(ClientConfig.KILL_COLOR_B);
+        r_s = ConfigUtils.getOrDefault(ClientConfig.START_NUMBER_COLOR_R);
+        g_s = ConfigUtils.getOrDefault(ClientConfig.START_NUMBER_COLOR_G);
+        b_s = ConfigUtils.getOrDefault(ClientConfig.START_NUMBER_COLOR_B);
+        r_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_R);
+        g_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_G);
+        b_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_B);
     }
 }

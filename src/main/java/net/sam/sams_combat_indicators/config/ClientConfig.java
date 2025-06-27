@@ -69,9 +69,9 @@ public class ClientConfig {
         END_NUMBER_COLOR_G = BUILDER.comment("End damage number color green (0-255) DEFAULT: 255").define("end_number_color_g", 255);
         END_NUMBER_COLOR_B = BUILDER.comment("End damage number color blue value (0-255) DEFAULT: 0").define("end_number_color_b", 0);
         SHOULD_SEPARATE_KILL_COLOR = BUILDER.comment("Should damage that kills be a different color DEFAULT: true").define("separate_kill_color", true);
-        KILL_COLOR_R = BUILDER.comment("Kill damage number color red value (0-255) DEFAULT: 255").define("end_number_color_r", 255);
-        KILL_COLOR_G = BUILDER.comment("Kill damage number color green (0-255) DEFAULT: 0").define("end_number_color_g", 0);
-        KILL_COLOR_B = BUILDER.comment("Kill damage number color blue value (0-255) DEFAULT: 0").define("end_number_color_b", 0);
+        KILL_COLOR_R = BUILDER.comment("Kill damage number color red value (0-255) DEFAULT: 255").define("kill_number_color_r", 255);
+        KILL_COLOR_G = BUILDER.comment("Kill damage number color green (0-255) DEFAULT: 0").define("kill_number_color_g", 0);
+        KILL_COLOR_B = BUILDER.comment("Kill damage number color blue value (0-255) DEFAULT: 0").define("kill_number_color_b", 0);
         NUMBER_BASE_SCALE = BUILDER.comment("Number base scale DEFAULT: 3.0").define("number_base_scale", 3.0);
         NUMBER_INCREMENT_SCALE = BUILDER.comment("Scale increase per successive hit (only applies when stacking numbers is on) DEFAULT: 1.0").define("number_increment_scale", 1.0);
         NUMBER_DECREMENT_SPEED = BUILDER.comment("How fast numbers decrease in scale (unit per second) (DEFAULT : 1.5)").define("number_decrement_speed", 1.5);
@@ -88,7 +88,7 @@ public class ClientConfig {
         DAMAGE_TAKEN_INDICATOR_MIN_SIZE_SCALE = BUILDER.comment("Minimum scale size for damage taken indicator (DEFAULT : 1.0)").define("damage_taken_indicator_min_size_scale", 1.0);
         DAMAGE_TAKEN_INDICATOR_MAX_SIZE_SCALE = BUILDER.comment("Maximum scale size for damage taken indicator (DEFAULT : 2.0)").define("damage_taken_indicator_max_size_scale", 2.0);
 
-        DAMAGE_TAKEN_INDICATOR_DISTANCE = BUILDER.comment("Damage taken indicator base distance from center of screen (in pixels) (DEFAULT : 220)").define("damage_taken_indicator_max_size_scale", 220);
+        DAMAGE_TAKEN_INDICATOR_DISTANCE = BUILDER.comment("Damage taken indicator base distance from center of screen (in pixels) (DEFAULT : 220)").define("damage_taken_indicator_distance", 220);
 
         BIG_HIT_INDICATOR_COLOR_R = BUILDER.comment("Biggest hit (damage that deals 100% max health) color red value (0-255) DEFAULT: 255").define("big_hit_indicator_color_r", 255);
         BIG_HIT_INDICATOR_COLOR_G = BUILDER.comment("Biggest hit (damage that deals 100% max health) color green value (0-255) DEFAULT: 0").define("big_hit_indicator_color_g", 0);

@@ -92,5 +92,8 @@ public class DamageIndicatorRenderer {
         damageDealtIndicators = temp2;
     }
 
-
+    //called in ConfigUtils when config is read
+    public static void initFromConfig() {
+        shouldSpray = ConfigUtils.getOrDefault(ClientConfig.SPRAY_NUMBERS);
+    }
 }

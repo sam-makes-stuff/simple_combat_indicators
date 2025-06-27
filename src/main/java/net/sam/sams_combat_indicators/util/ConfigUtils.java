@@ -28,7 +28,10 @@ public class ConfigUtils {
     @SubscribeEvent
     public static void onModConfigLoaded(ModConfigEvent event) {
         if (event.getConfig().getSpec() == ClientConfig.SPEC) {
-            DamageIndicatorRenderer.shouldSpray = ConfigUtils.getOrDefault(ClientConfig.SPRAY_NUMBERS);
+
+            DamageIndicatorRenderer.initFromConfig();
+            DamageDealtIndicator.initFromConfig();
+            DamageTakenIndicator.initFromConfig();
         }
     }
 }
