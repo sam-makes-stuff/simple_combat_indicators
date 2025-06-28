@@ -113,17 +113,6 @@ public class DamageDealtIndicator {
         }
     }
 
-    @SubscribeEvent
-    public static void onDamaged(LivingDamageEvent event){
-        if(!(event.getEntity().level() instanceof ServerLevel)){return;}
-        Entity attacker = event.getSource().getEntity();
-        LivingEntity receiver = event.getEntity();
-        if(attacker instanceof Player p){
-            ModPackets.sendToTracking(event.getEntity(), new S2CDamageDealtPacket(
-                    attacker.getId(), receiver.getId(), event.getAmount()
-            ));
-        }
-    }
 
     public void tick(float partialTick){
         currentPartialTick = partialTick;
