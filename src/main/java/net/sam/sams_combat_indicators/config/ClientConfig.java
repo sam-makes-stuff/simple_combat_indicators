@@ -28,14 +28,17 @@ public class ClientConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> KILL_COLOR_G;
     public static final ForgeConfigSpec.ConfigValue<Integer> KILL_COLOR_B;
 
-    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_NUMBERS_FADE;
-
     public static final ForgeConfigSpec.ConfigValue<Double> NUMBER_BASE_SCALE;
     public static final ForgeConfigSpec.ConfigValue<Double> NUMBER_INCREMENT_SCALE;
     public static final ForgeConfigSpec.ConfigValue<Double> NUMBER_DECREMENT_SPEED;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> STACKING_NUMBERS;
     public static final ForgeConfigSpec.ConfigValue<Boolean> SPRAY_NUMBERS;
+    public static final ForgeConfigSpec.ConfigValue<Double> SPRAY_ANGLE_RANGE;
+    public static final ForgeConfigSpec.ConfigValue<Double> SPRAY_ANGLE_OFFSET;
+    public static final ForgeConfigSpec.ConfigValue<Double> SPRAY_VELOCITY;
+    public static final ForgeConfigSpec.ConfigValue<Double> NUMBER_FRICTION;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> ROTATE_RANGE;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> DAMAGE_TAKEN_INDICATOR_DURATION;
@@ -74,10 +77,14 @@ public class ClientConfig {
         KILL_COLOR_B = BUILDER.comment("Kill damage number color blue value (0-255) DEFAULT: 0").define("kill_number_color_b", 0);
         NUMBER_BASE_SCALE = BUILDER.comment("Number base scale DEFAULT: 3.0").define("number_base_scale", 3.0);
         NUMBER_INCREMENT_SCALE = BUILDER.comment("Scale increase per successive hit (only applies when stacking numbers is on) DEFAULT: 1.0").define("number_increment_scale", 1.0);
-        NUMBER_DECREMENT_SPEED = BUILDER.comment("How fast numbers decrease in scale (unit per second) (DEFAULT : 1.5)").define("number_decrement_speed", 1.5);
-        DO_NUMBERS_FADE = BUILDER.comment("Should damage numbers fade away").define("do_numbers_fade", true);
+        NUMBER_DECREMENT_SPEED = BUILDER.comment("How fast numbers decrease in scale (unit per second) (DEFAULT: 1.5)").define("number_decrement_speed", 1.5);
         STACKING_NUMBERS = BUILDER.comment("Should damage numbers on a target sum up?").define("stack_damage_numbers", true);
         SPRAY_NUMBERS = BUILDER.comment("Should damage numbers spray in a random direction?").define("spray_damage_numbers", false);
+        SPRAY_VELOCITY = BUILDER.comment("Initial spray velocity of numbers (in pixels per second) DEFAULT: 150.0").define("spray_velocity", 150.0);
+        NUMBER_FRICTION = BUILDER.comment("How fast numbers slot down (Loss in % of velocity per second e.g. 0.27 = 27% velocity lost per second) DEFAULT: 0.27").define("number_friction", 0.27);
+        SPRAY_ANGLE_RANGE = BUILDER.comment("Range from -angle to +angle that numbers will spray (in degrees) DEFAULT: 180.0").define("spray_angle_range", 180.0);
+        SPRAY_ANGLE_OFFSET = BUILDER.comment("Range angle offset applied to all numbers (in degrees) DEFAULT: 0.0").define("spray_angle_offset", 0.0);
+
         ROTATE_RANGE = BUILDER.comment("Range in degrees (-rotate_range to +rotate_range) between which damage numbers will randomly rotate (set to zero to disable)").define("rotate_range", 15);
 
         //DAMAGE TAKEN INDICATOR SETTINGS

@@ -65,13 +65,13 @@ public class DamageDealtIndicator {
     public static float gravity = 0.0f;
 
 
-    public static float sprayVel = 10.0f;
-    public static float sprayAngleRange = 180.0f;
-    public static float sprayAngleOffset = 0.0f;
-    public static float friction = 0.1f;
+    public static float sprayVel;
+    public static float sprayAngleRange;
+    public static float sprayAngleOffset;
+    public static float friction;
 
-    public int xOffset = 0;
-    public int yOffset = 0;
+    public float xOffset = 0;
+    public float yOffset = 0;
 
     public float xVel;
     public float yVel;
@@ -102,8 +102,9 @@ public class DamageDealtIndicator {
 
             if(ConfigUtils.getOrDefault(ClientConfig.SPRAY_NUMBERS)){
                 float randAngle = (float)(((Minecraft.getInstance().level.random.nextFloat() * (sprayAngleRange * (Math.PI/180.0f)) * 2) - (sprayAngleRange * (Math.PI/180.0f))) + (sprayAngleOffset * (Math.PI/180.0f)));
-                xVel = (float)(sprayVel * Math.cos(randAngle));
-                yVel = (float)(sprayVel * Math.sin(randAngle));
+                double distanceToEntitySqrt = Math.sqrt(Minecraft.getInstance().player.position().distanceTo(this.target.position()));
+                xVel = (float)(sprayVel * Math.cos(randAngle) * (1/distanceToEntitySqrt));
+                yVel = (float)(sprayVel * Math.sin(randAngle) * (1/distanceToEntitySqrt));
             }else{
                 xVel = 0.0f;
                 yVel = 0.0f;
@@ -157,6 +158,9 @@ public class DamageDealtIndicator {
         this.xOffset += xVel * timeDif;
         this.yOffset += yVel * timeDif;
 
+        xVel *= Math.pow(1-friction, timeDif);
+        yVel *= Math.pow(1-friction, timeDif);
+
         this.age += timeDif;
         lastPartialTick = currentPartialTick;
 
@@ -190,5 +194,9 @@ public class DamageDealtIndicator {
         r_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_R);
         g_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_G);
         b_e = ConfigUtils.getOrDefault(ClientConfig.END_NUMBER_COLOR_B);
+        sprayVel = (float) (double) ConfigUtils.getOrDefault(ClientConfig.SPRAY_VELOCITY);
+        friction = (float) (double) ConfigUtils.getOrDefault(ClientConfig.NUMBER_FRICTION);
+        sprayAngleRange = (float) (double) ConfigUtils.getOrDefault(ClientConfig.SPRAY_ANGLE_RANGE);
+        sprayAngleOffset = (float) (double) ConfigUtils.getOrDefault(ClientConfig.SPRAY_ANGLE_OFFSET);
     }
 }
