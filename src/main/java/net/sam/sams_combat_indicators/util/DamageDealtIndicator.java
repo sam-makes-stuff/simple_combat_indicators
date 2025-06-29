@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
@@ -14,7 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.sam.sams_combat_indicators.SamsCombatIndicators;
 import net.sam.sams_combat_indicators.config.ClientConfig;
 import net.sam.sams_combat_indicators.networking.ModPackets;
-import net.sam.sams_combat_indicators.networking.packets.S2CDamageDealtPacket;
+import net.sam.sams_combat_indicators.render.DamageIndicatorRenderer;
 
 
 @Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)

@@ -92,7 +92,7 @@ public class ClientConfig {
         DAMAGE_TAKEN_INDICATOR_DURATION = BUILDER.comment("How long damage taken indicator lasts (in ticks) DEFAULT: 60").define("damage_taken_indicator_duration", 60);
         DAMAGE_TAKEN_INDICATOR_BIG_DURATION = BUILDER.comment("How long damage taken is big on initial hit (in ticks) DEFAULT: 20").define("damage_taken_indicator_big_duration", 20);
 
-        DAMAGE_TAKEN_INDICATOR_BASE_SIZE_SCALE = BUILDER.comment("Base scale size for damage taken indicator (DEFAULT : 1.0)").define("damage_taken_indicator_min_size_scale", 3.0);
+        DAMAGE_TAKEN_INDICATOR_BASE_SIZE_SCALE = BUILDER.comment("Base scale size for damage taken indicator (DEFAULT : 1.0)").define("damage_taken_indicator_min_size_scale", 1.0);
         DAMAGE_TAKEN_INDICATOR_MAX_SIZE_SCALE_MULT = BUILDER.comment("Maximum scale size multiplier for damage taken indicator (DEFAULT : 2.0)").define("damage_taken_indicator_max_size_scale", 2.0);
 
         DAMAGE_TAKEN_INDICATOR_DISTANCE = BUILDER.comment("Damage taken indicator base distance from center of screen (in pixels) (DEFAULT : 220)").define("damage_taken_indicator_distance", 220);

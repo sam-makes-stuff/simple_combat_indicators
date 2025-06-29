@@ -12,71 +12,51 @@ import net.sam.sams_combat_indicators.util.ConfigUtils;
 import net.sam.sams_combat_indicators.util.DamageDealtIndicator;
 import net.sam.sams_combat_indicators.util.DamageTakenIndicator;
 public class ClientPacketHandler {
-//    public static void handleS2CDamageDealtPacket(int entityId, int sourceId, float damage) {
-//
-//        Level level = Minecraft.getInstance().level;
-//        if (level == null) return;
-//
-//        Player player = Minecraft.getInstance().player;
-//        if(player.getId() != sourceId){return;}
-//
-//        Entity entity = level.getEntity(entityId);
-//        if (entity != null) {
-//            FloatingDamageRenderer.spawnDamageNumber(damage, entity);
-//        }
-//    }
 
-    public static void handleS2CDamageDealtPacket(int attackerId, int receiverId, float damage) {
-
-        boolean numbers_enabled = ConfigUtils.getOrDefault(ClientConfig.ENABLE_DAMAGE_NUMBERS);
-        if(!numbers_enabled){return;}
-
+    public static void handleS2CAttackedPacket(int attackerId, int receiverId, float damage) {
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
-
         Player player = Minecraft.getInstance().player;
-        if(player.getId() != attackerId){return;}
 
-        Entity entity = level.getEntity(receiverId);
-        if ((entity instanceof LivingEntity livingEntity)) {
-            int entityId = livingEntity.getId();
+        //client player dealt damage
+        if(player.getId() == attackerId){
+            boolean numbers_enabled = ConfigUtils.getOrDefault(ClientConfig.ENABLE_DAMAGE_NUMBERS);
+            if(!numbers_enabled){return;}
 
-            boolean stackingDamage = ClientConfig.STACKING_NUMBERS.get();
-            if(stackingDamage){
-                boolean found = false;
-                for (DamageDealtIndicator dmg : DamageIndicatorRenderer.damageDealtIndicators) {
-                    if(dmg.target == livingEntity){
-                        DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId,livingEntity,damage, damage + dmg.totalDamage, DamageDealtIndicator.baseScale + DamageDealtIndicator.incrementScale));
-                        DamageIndicatorRenderer.damageDealtIndicators.remove(dmg);
-                        found = true;
-                        break;
+            Entity entity = level.getEntity(receiverId);
+            if ((entity instanceof LivingEntity livingEntity)) {
+                int entityId = livingEntity.getId();
+
+                boolean stackingDamage = ClientConfig.STACKING_NUMBERS.get();
+                if(stackingDamage){
+                    boolean found = false;
+                    for (DamageDealtIndicator dmg : DamageIndicatorRenderer.damageDealtIndicators) {
+                        if(dmg.target == livingEntity){
+                            DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId,livingEntity,damage, damage + dmg.totalDamage, DamageDealtIndicator.baseScale + DamageDealtIndicator.incrementScale));
+                            DamageIndicatorRenderer.damageDealtIndicators.remove(dmg);
+                            found = true;
+                            break;
+                        }
                     }
-                }
-                if(!found){
+                    if(!found){
+                        DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, livingEntity, damage,damage, DamageDealtIndicator.baseScale + DamageDealtIndicator.incrementScale));
+                    }
+                }else{
                     DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, livingEntity, damage,damage, DamageDealtIndicator.baseScale + DamageDealtIndicator.incrementScale));
                 }
-            }else{
-                DamageIndicatorRenderer.damageDealtIndicators.add(new DamageDealtIndicator(entityId, livingEntity, damage,damage, DamageDealtIndicator.baseScale + DamageDealtIndicator.incrementScale));
+
             }
 
         }
-    }
-
-    public static void handleS2CAttackedPacket(int attackerId, int receiverId, float damage) {
-
-        boolean indicator_enabled = ConfigUtils.getOrDefault(ClientConfig.ENABLE_DAMAGE_TAKEN_INDICATOR);
-        if(!indicator_enabled){return;}
-
-        Level level = Minecraft.getInstance().level;
-        if (level == null) return;
-
-        Player player = Minecraft.getInstance().player;
-        if(player.getId() != receiverId){return;}
-
-        Entity entity = level.getEntity(attackerId);
-        if (entity != null) {
-            int entityId = entity.getId();
-            DamageIndicatorRenderer.damageTakenIndicators.add(new DamageTakenIndicator(entityId, entity, damage));
+        //client player take damage
+        else if(player.getId() == receiverId){
+            boolean indicator_enabled = ConfigUtils.getOrDefault(ClientConfig.ENABLE_DAMAGE_TAKEN_INDICATOR);
+            if(!indicator_enabled){return;}
+            Entity entity = level.getEntity(attackerId);
+            if (entity != null) {
+                int entityId = entity.getId();
+                DamageIndicatorRenderer.damageTakenIndicators.add(new DamageTakenIndicator(entityId, entity, damage));
+            }
         }
     }
 }
