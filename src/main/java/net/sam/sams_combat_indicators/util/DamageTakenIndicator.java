@@ -16,6 +16,7 @@ import net.sam.sams_combat_indicators.SamsCombatIndicators;
 import net.sam.sams_combat_indicators.config.ClientConfig;
 import net.sam.sams_combat_indicators.networking.ModPackets;
 import net.sam.sams_combat_indicators.networking.packets.S2CAttackedPacket;
+import net.sam.sams_combat_indicators.render.DamageIndicatorRenderer;
 
 
 @Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
@@ -85,21 +86,24 @@ public class DamageTakenIndicator {
         }
     }
 
-    @SubscribeEvent
-    public static void onDamaged(LivingDamageEvent event){
-        if(!(event.getEntity().level() instanceof ServerLevel)){return;}
-        Entity attacker = event.getSource().getEntity();
-        LivingEntity receiver = event.getEntity();
-
-        if(receiver instanceof Player p){
-            if(p.isInvulnerableTo(event.getSource())){return;}
-            if(attacker != null){
-                ModPackets.sendToTracking(event.getEntity(), new S2CAttackedPacket(
-                        attacker.getId(), receiver.getId(), event.getAmount()
-                ));
-            }
-        }
-    }
+//    @SubscribeEvent
+//    public static void onDamaged(LivingDamageEvent event){
+//        if(!(event.getEntity().level() instanceof ServerLevel)){return;}
+//        Entity attacker = event.getSource().getEntity();
+//        LivingEntity receiver = event.getEntity();
+//        Player player = Minecraft.getInstance().player;
+//        if(receiver instanceof Player p){
+//            if(p.isInvulnerableTo(event.getSource())){return;}
+//            if(attacker != null){
+//                if(player.getUUID() == receiver.getUUID()){
+//                    boolean indicator_enabled = ConfigUtils.getOrDefault(ClientConfig.ENABLE_DAMAGE_TAKEN_INDICATOR);
+//                    if(!indicator_enabled){return;}
+//                    int attackerId = attacker.getId();
+//                    DamageIndicatorRenderer.damageTakenIndicators.add(new DamageTakenIndicator(attackerId, attacker, event.getAmount()));
+//                }
+//            }
+//        }
+//    }
 
     public void tick(float partialTick){
         currentPartialTick = partialTick;
@@ -118,24 +122,6 @@ public class DamageTakenIndicator {
         tickOpacityScale();
         lastPartialTick = currentPartialTick;
     }
-
-//    public void rotateToAttacker(float partialTick){
-//        Player player = Minecraft.getInstance().player;
-//        Vec3 eyePos = player.getEyePosition(partialTick);
-//        Vec3 to = (attackedFromPos.subtract(eyePos).normalize());
-//
-//        Vec3 up = player.getUpVector(partialTick);
-//        Vec3 right = player.getLookAngle().cross(up);
-//
-//        Vec3 proj = (up.scale(up.dot(to)).add(right.scale(right.dot(to)))).normalize();
-//        double dotProd = proj.dot(up);
-//        double angle = Math.acos(dotProd);
-//        if(to.dot(right) < 0){
-//            angle *= -1;
-//        }
-//        rotation = (float) angle;
-//    }
-
         public void rotateToAttackerXZ(float partialTick){
         Player player = Minecraft.getInstance().player;
         Vec3 eyePos = player.getEyePosition(partialTick);

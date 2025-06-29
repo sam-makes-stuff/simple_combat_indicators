@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.sam.sams_combat_indicators.SamsCombatIndicators;
 import net.sam.sams_combat_indicators.config.ClientConfig;
 import net.sam.sams_combat_indicators.networking.ModPackets;
+import net.sam.sams_combat_indicators.networking.packets.S2CAttackedPacket;
 import net.sam.sams_combat_indicators.render.DamageIndicatorRenderer;
 
 

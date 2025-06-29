@@ -11,9 +11,16 @@ import net.sam.sams_combat_indicators.render.DamageIndicatorRenderer;
 import net.sam.sams_combat_indicators.util.ConfigUtils;
 import net.sam.sams_combat_indicators.util.DamageDealtIndicator;
 import net.sam.sams_combat_indicators.util.DamageTakenIndicator;
-public class ClientPacketHandler {
 
+
+public class ClientPacketHandler {
     public static void handleS2CAttackedPacket(int attackerId, int receiverId, float damage) {
+
+        Player play1er = Minecraft.getInstance().player;
+        System.out.printf("ATTACKERID %d%n", attackerId);
+        System.out.printf("RECEIVERID %d%n", receiverId);
+        System.out.printf("PLAYERID %d%n", play1er.getId());
+
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
         Player player = Minecraft.getInstance().player;
@@ -50,6 +57,7 @@ public class ClientPacketHandler {
         }
         //client player take damage
         else if(player.getId() == receiverId){
+            System.out.println("AAA");
             boolean indicator_enabled = ConfigUtils.getOrDefault(ClientConfig.ENABLE_DAMAGE_TAKEN_INDICATOR);
             if(!indicator_enabled){return;}
             Entity entity = level.getEntity(attackerId);
