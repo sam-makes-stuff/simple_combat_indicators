@@ -71,12 +71,11 @@ public class DamageIndicatorRenderer {
             double offsetY = 0.75;
             double offsetX = 0.35;
 
-            double distanceToEntity = Minecraft.getInstance().player.getPosition(partialTick).subtract(dmg.target.getPosition(partialTick)).length();
             Vec3 pos = dmg.targetPos;
             //if spray numbers is off then spawn at top left, otherwise spawn in center of mob
             if(!shouldSpray){
-                pos = pos.add(up.scale(offsetY * (CustomHudRenderer.currentFov / 110) * Math.sqrt(distanceToEntity)));
-                pos = pos.add(left.scale(offsetX * (CustomHudRenderer.currentFov / 110) * Math.sqrt(distanceToEntity)));
+                pos = pos.add(up.scale(offsetY * (CustomHudRenderer.currentFov / 110) * dmg.sqrtDistToEntity));
+                pos = pos.add(left.scale(offsetX * (CustomHudRenderer.currentFov / 110) * dmg.sqrtDistToEntity));
             }
             Vec2 screenRenderPos = CustomHudRenderer.worldToScreen(pos);
             if(screenRenderPos != null){

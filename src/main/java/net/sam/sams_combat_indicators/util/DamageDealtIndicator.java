@@ -78,6 +78,8 @@ public class DamageDealtIndicator {
     public float xVel;
     public float yVel;
 
+    public float sqrtDistToEntity;
+
     public DamageDealtIndicator(int targetId, LivingEntity target, float damage, float totalDamage, float scale) {
         this.target = target;
         this.targetId = targetId;
@@ -89,6 +91,7 @@ public class DamageDealtIndicator {
         LocalPlayer p = Minecraft.getInstance().player;
         if(p != null){
             this.maxHealthProportion = totalDamage / (Minecraft.getInstance().player.getMaxHealth());
+            sqrtDistToEntity = (float) Math.sqrt(p.position().distanceTo(target.position()));
 
             if(maxRotation != 0.0) {
                 this.rotation = (target.level().random.nextFloat() * maxRotation * 2) - maxRotation;
