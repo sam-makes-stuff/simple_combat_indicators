@@ -11,6 +11,4 @@ public class ModParticles {
     public static final DeferredRegister<ParticleType<?>> PARTICLES =
             DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, SamsCombatIndicators.MOD_ID);
 
-    public static final RegistryObject<SimpleParticleType> DAMAGE_NUMBER =
-            PARTICLES.register("damage_number", () -> new SimpleParticleType(true));
 }
