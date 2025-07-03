@@ -115,6 +115,8 @@ public class DamageDealtIndicator {
                 yVel = 0.0f;
             }
 
+            gravity = (float)(double)ConfigUtils.getOrDefault(ClientConfig.NUMBER_GRAVITY);
+
         }
     }
 
@@ -152,6 +154,7 @@ public class DamageDealtIndicator {
         this.xOffset += xVel * timeDif;
         this.yOffset += yVel * timeDif;
 
+        yVel += gravity * timeDif;
         xVel *= Math.pow(1-friction, timeDif);
         yVel *= Math.pow(1-friction, timeDif);
 

@@ -38,6 +38,7 @@ public class ClientConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> SPRAY_ANGLE_OFFSET;
     public static final ForgeConfigSpec.ConfigValue<Double> SPRAY_VELOCITY;
     public static final ForgeConfigSpec.ConfigValue<Double> NUMBER_FRICTION;
+    public static final ForgeConfigSpec.ConfigValue<Double> NUMBER_GRAVITY;
 
     public static final ForgeConfigSpec.ConfigValue<Integer> ROTATE_RANGE;
 
@@ -81,7 +82,8 @@ public class ClientConfig {
         STACKING_NUMBERS = BUILDER.comment("Should damage numbers on a target sum up?").define("stack_damage_numbers", true);
         SPRAY_NUMBERS = BUILDER.comment("Should damage numbers spray in a random direction?").define("spray_damage_numbers", false);
         SPRAY_VELOCITY = BUILDER.comment("Initial spray velocity of numbers (in pixels per second) DEFAULT: 150.0").define("spray_velocity", 150.0);
-        NUMBER_FRICTION = BUILDER.comment("How fast numbers slot down (Loss in % of velocity per second e.g. 0.27 = 27% velocity lost per second) DEFAULT: 0.27").define("number_friction", 0.27);
+        NUMBER_FRICTION = BUILDER.comment("How fast numbers slow down (Loss in % of velocity per second e.g. 0.27 = 27% velocity lost per second) DEFAULT: 0.27").define("number_friction", 0.27);
+        NUMBER_GRAVITY = BUILDER.comment("How fast numbers accelerate down (pixels/s^2) DEFAULT: 1.0").define("number_gravity", 1.0);
         SPRAY_ANGLE_RANGE = BUILDER.comment("Range from -angle to +angle that numbers will spray (in degrees) DEFAULT: 180.0").define("spray_angle_range", 180.0);
         SPRAY_ANGLE_OFFSET = BUILDER.comment("Range angle offset applied to all numbers (in degrees) DEFAULT: 0.0").define("spray_angle_offset", 0.0);
 
