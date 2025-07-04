@@ -12,7 +12,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.sam.simple_combat_indicators.config.ClientConfig;
-import net.sam.simple_combat_indicators.config.CommonConfig;
 import net.sam.simple_combat_indicators.init.Init;
 import net.sam.simple_combat_indicators.networking.ModPackets;
 import net.sam.simple_combat_indicators.util.DamageHandler;
@@ -33,7 +32,6 @@ public class SimpleCombatIndicators
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new DamageHandler());
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "simple_combat_indicators-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC, "simple_combat_indicators-client.toml");
 
     }
