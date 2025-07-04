@@ -65,7 +65,7 @@ public class ClientConfig {
         // DAMAGE NUMBER SETTINGS
         ENABLE_DAMAGE_NUMBERS = BUILDER.comment("Should damage numbers show DEFAULT: true").define("enable_damage_numbers", true);
         NUMBER_DURATION = BUILDER.comment("Damage number duration (in ticks) DEFAULT: 30").define("number_duration", 30);
-        INITIAL_HIT_TIME = BUILDER.comment("Duration damage numbers flash a different color and size initially (set to 0 to disable) (in ticks) DEFAULT: 10").define("separate_initial_hit_time", 10);
+        INITIAL_HIT_TIME = BUILDER.comment("Duration damage numbers flash a different color initially (set to 0 to disable) (in ticks) DEFAULT: 10").define("initial_hit_time", 10);
         START_NUMBER_COLOR_R = BUILDER.comment("Start damage number color red value (0-255) DEFAULT: 255").define("start_number_color_r", 255);
         START_NUMBER_COLOR_G = BUILDER.comment("Start damage number color green value (0-255) DEFAULT: 102").define("start_number_color_g", 102);
         START_NUMBER_COLOR_B = BUILDER.comment("Start damage number color blue value (0-255) DEFAULT: 0").define("start_number_color_b", 0);
