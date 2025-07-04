@@ -1,25 +1,16 @@
-package net.sam.sams_combat_indicators.util;
+package net.sam.simple_combat_indicators.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.sam.sams_combat_indicators.SamsCombatIndicators;
-import net.sam.sams_combat_indicators.config.ClientConfig;
-import net.sam.sams_combat_indicators.networking.ModPackets;
-import net.sam.sams_combat_indicators.networking.packets.S2CAttackedPacket;
-import net.sam.sams_combat_indicators.render.DamageIndicatorRenderer;
+import net.sam.simple_combat_indicators.SimpleCombatIndicators;
+import net.sam.simple_combat_indicators.config.ClientConfig;
 
 
-@Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = SimpleCombatIndicators.MOD_ID, value = Dist.CLIENT)
 public class DamageDealtIndicator {
 
     public static int lifetime;

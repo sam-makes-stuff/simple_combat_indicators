@@ -1,15 +1,15 @@
-package net.sam.sams_combat_indicators.util;
+package net.sam.simple_combat_indicators.util;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.sam.sams_combat_indicators.SamsCombatIndicators;
-import net.sam.sams_combat_indicators.config.ClientConfig;
-import net.sam.sams_combat_indicators.render.DamageIndicatorRenderer;
+import net.sam.simple_combat_indicators.SimpleCombatIndicators;
+import net.sam.simple_combat_indicators.config.ClientConfig;
+import net.sam.simple_combat_indicators.render.DamageIndicatorRenderer;
 
 
-@Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = SimpleCombatIndicators.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ConfigUtils {
 
     public static <T> T getOrDefault(ForgeConfigSpec.ConfigValue<T> configValue) {

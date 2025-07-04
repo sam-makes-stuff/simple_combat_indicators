@@ -1,4 +1,4 @@
-package net.sam.sams_combat_indicators.render;
+package net.sam.simple_combat_indicators.render;
 
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Camera;
@@ -11,24 +11,23 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.sam.sams_combat_indicators.SamsCombatIndicators;
-import net.sam.sams_combat_indicators.config.ClientConfig;
-import net.sam.sams_combat_indicators.util.ConfigUtils;
-import net.sam.sams_combat_indicators.util.DamageDealtIndicator;
-import net.sam.sams_combat_indicators.util.DamageTakenIndicator;
+import net.sam.simple_combat_indicators.SimpleCombatIndicators;
+import net.sam.simple_combat_indicators.config.ClientConfig;
+import net.sam.simple_combat_indicators.util.ConfigUtils;
+import net.sam.simple_combat_indicators.util.DamageDealtIndicator;
+import net.sam.simple_combat_indicators.util.DamageTakenIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = SamsCombatIndicators.MOD_ID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = SimpleCombatIndicators.MOD_ID, value = Dist.CLIENT)
 public class DamageIndicatorRenderer {
 
     public static boolean shouldSpray;
 
     public static List<DamageTakenIndicator> damageTakenIndicators = new ArrayList<>();
     public static List<DamageDealtIndicator> damageDealtIndicators = new ArrayList<>();
-    private static final ResourceLocation DAMAGE_TAKEN_INDICATOR = new ResourceLocation(SamsCombatIndicators.MOD_ID, "textures/client/damage_taken_indicator.png");
+    private static final ResourceLocation DAMAGE_TAKEN_INDICATOR = new ResourceLocation(SimpleCombatIndicators.MOD_ID, "textures/client/damage_taken_indicator.png");
     @SubscribeEvent
     public static void onRenderGui(RenderGuiEvent.Post event) {
         renderDamageTakenIndicators(event.getPartialTick());

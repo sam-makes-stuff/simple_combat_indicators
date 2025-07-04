@@ -1,10 +1,10 @@
-package net.sam.sams_combat_indicators.networking.packets;
+package net.sam.simple_combat_indicators.networking.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
-import net.sam.sams_combat_indicators.networking.ClientPacketHandler;
+import net.sam.simple_combat_indicators.networking.ClientPacketHandler;
 
 import java.util.function.Supplier;
 

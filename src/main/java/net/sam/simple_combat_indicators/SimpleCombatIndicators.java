@@ -1,4 +1,4 @@
-package net.sam.sams_combat_indicators;
+package net.sam.simple_combat_indicators;
 
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.api.distmarker.Dist;
@@ -11,19 +11,19 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.sam.sams_combat_indicators.config.ClientConfig;
-import net.sam.sams_combat_indicators.config.CommonConfig;
-import net.sam.sams_combat_indicators.init.Init;
-import net.sam.sams_combat_indicators.networking.ModPackets;
-import net.sam.sams_combat_indicators.util.DamageHandler;
+import net.sam.simple_combat_indicators.config.ClientConfig;
+import net.sam.simple_combat_indicators.config.CommonConfig;
+import net.sam.simple_combat_indicators.init.Init;
+import net.sam.simple_combat_indicators.networking.ModPackets;
+import net.sam.simple_combat_indicators.util.DamageHandler;
 import org.slf4j.Logger;
 
-@Mod(SamsCombatIndicators.MOD_ID)
-public class SamsCombatIndicators
+@Mod(SimpleCombatIndicators.MOD_ID)
+public class SimpleCombatIndicators
 {
-    public static final String MOD_ID = "sams_combat_indicators";
+    public static final String MOD_ID = "simple_combat_indicators";
     private static final Logger LOGGER = LogUtils.getLogger();
-    public SamsCombatIndicators()
+    public SimpleCombatIndicators()
     {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -33,8 +33,8 @@ public class SamsCombatIndicators
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new DamageHandler());
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "sams_combat_indicators-common.toml");
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC, "sams_combat_indicators-client.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "simple_combat_indicators-common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC, "simple_combat_indicators-client.toml");
 
     }
 

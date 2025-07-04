@@ -1,4 +1,4 @@
-package net.sam.sams_combat_indicators.networking;
+package net.sam.simple_combat_indicators.networking;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -7,8 +7,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
-import net.sam.sams_combat_indicators.SamsCombatIndicators;
-import net.sam.sams_combat_indicators.networking.packets.S2CAttackedPacket;
+import net.sam.simple_combat_indicators.SimpleCombatIndicators;
+import net.sam.simple_combat_indicators.networking.packets.S2CAttackedPacket;
 
 
 public class ModPackets {
@@ -16,7 +16,7 @@ public class ModPackets {
     private static int id = 0;
 
     private static final SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder
-            .named(new ResourceLocation(SamsCombatIndicators.MOD_ID, "main"))
+            .named(new ResourceLocation(SimpleCombatIndicators.MOD_ID, "main"))
             .networkProtocolVersion(() -> "1.0")
             .clientAcceptedVersions(s -> true)
             .serverAcceptedVersions(s -> true)

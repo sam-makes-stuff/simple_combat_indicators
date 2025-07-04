@@ -1,10 +1,9 @@
-package net.sam.sams_combat_indicators.util;
+package net.sam.simple_combat_indicators.util;
 
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.sam.sams_combat_indicators.networking.ModPackets;
-import net.sam.sams_combat_indicators.networking.packets.S2CAttackedPacket;
+import net.sam.simple_combat_indicators.networking.ModPackets;
+import net.sam.simple_combat_indicators.networking.packets.S2CAttackedPacket;
 
 public class DamageHandler {
     @SubscribeEvent

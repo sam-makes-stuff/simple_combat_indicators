@@ -1,4 +1,4 @@
-package net.sam.sams_combat_indicators.config;
+package net.sam.simple_combat_indicators.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 

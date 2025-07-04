@@ -1,16 +1,16 @@
 // ClientPacketHandler.java
-package net.sam.sams_combat_indicators.networking;
+package net.sam.simple_combat_indicators.networking;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.sam.sams_combat_indicators.config.ClientConfig;
-import net.sam.sams_combat_indicators.render.DamageIndicatorRenderer;
-import net.sam.sams_combat_indicators.util.ConfigUtils;
-import net.sam.sams_combat_indicators.util.DamageDealtIndicator;
-import net.sam.sams_combat_indicators.util.DamageTakenIndicator;
+import net.sam.simple_combat_indicators.config.ClientConfig;
+import net.sam.simple_combat_indicators.render.DamageIndicatorRenderer;
+import net.sam.simple_combat_indicators.util.ConfigUtils;
+import net.sam.simple_combat_indicators.util.DamageDealtIndicator;
+import net.sam.simple_combat_indicators.util.DamageTakenIndicator;
 
 
 public class ClientPacketHandler {
